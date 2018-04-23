@@ -1,0 +1,640 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="LibraryModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012.Azure" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Account">
+          <Key>
+            <PropertyRef Name="AccountId" />
+          </Key>
+          <Property Name="AccountId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="FirstName" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="LastName" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="IsLibrarian" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="AccountStatusLog">
+          <Key>
+            <PropertyRef Name="AccountStatusLogId" />
+          </Key>
+          <Property Name="AccountStatusLogId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="AccountId" Type="int" Nullable="false" />
+          <Property Name="AccountStatusTypeId" Type="tinyint" Nullable="false" />
+          <Property Name="LogDateTime" Type="datetime" Nullable="false" />
+        </EntityType>
+        <EntityType Name="AccountStatusType">
+          <Key>
+            <PropertyRef Name="AccountStatusTypeId" />
+          </Key>
+          <Property Name="AccountStatusTypeId" Type="tinyint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="StatusTypeName" Type="varchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Item">
+          <Key>
+            <PropertyRef Name="ItemId" />
+          </Key>
+          <Property Name="ItemId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Title" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="Author" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Genre" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="PublicationYear" Type="smallint" Nullable="false" />
+          <Property Name="ItemTypeId" Type="tinyint" Nullable="false" />
+        </EntityType>
+        <EntityType Name="ItemStatusLog">
+          <Key>
+            <PropertyRef Name="ItemStatusLogId" />
+          </Key>
+          <Property Name="ItemStatusLogId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ItemId" Type="int" Nullable="false" />
+          <Property Name="ItemStatusTypeId" Type="tinyint" Nullable="false" />
+          <Property Name="LogDateTime" Type="datetime" Nullable="false" />
+          <Property Name="AccountId" Type="int" />
+        </EntityType>
+        <EntityType Name="ItemStatusType">
+          <Key>
+            <PropertyRef Name="ItemStatusTypeId" />
+          </Key>
+          <Property Name="ItemStatusTypeId" Type="tinyint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ItemStatusName" Type="varchar" MaxLength="20" Nullable="false" />
+        </EntityType>
+        <EntityType Name="ItemType">
+          <Key>
+            <PropertyRef Name="ItemTypeId" />
+          </Key>
+          <Property Name="ItemTypeId" Type="tinyint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ItemTypeName" Type="varchar" MaxLength="10" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Login">
+          <Key>
+            <PropertyRef Name="LoginId" />
+          </Key>
+          <Property Name="LoginId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Username" Type="varchar" MaxLength="50" />
+          <Property Name="PasswordHash" Type="char" MaxLength="128" Nullable="false" />
+          <Property Name="IsPasswordTemporary" Type="bit" Nullable="false" />
+          <Property Name="AccountId" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Report">
+          <Key>
+            <PropertyRef Name="ReportId" />
+          </Key>
+          <Property Name="ReportId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ReportDateTime" Type="datetime" Nullable="false" />
+          <Property Name="ReportTypeId" Type="tinyint" Nullable="false" />
+          <Property Name="AccountId" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="ReportType">
+          <Key>
+            <PropertyRef Name="ReportTypeId" />
+          </Key>
+          <Property Name="ReportTypeId" Type="tinyint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ReportTypeName" Type="varchar" MaxLength="10" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_AccountStatusLog_Account">
+          <End Role="Account" Type="Self.Account" Multiplicity="1" />
+          <End Role="AccountStatusLog" Type="Self.AccountStatusLog" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Account">
+              <PropertyRef Name="AccountId" />
+            </Principal>
+            <Dependent Role="AccountStatusLog">
+              <PropertyRef Name="AccountId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_AccountStatusLog_AccountStatusType">
+          <End Role="AccountStatusType" Type="Self.AccountStatusType" Multiplicity="1" />
+          <End Role="AccountStatusLog" Type="Self.AccountStatusLog" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AccountStatusType">
+              <PropertyRef Name="AccountStatusTypeId" />
+            </Principal>
+            <Dependent Role="AccountStatusLog">
+              <PropertyRef Name="AccountStatusTypeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Item_ItemType">
+          <End Role="ItemType" Type="Self.ItemType" Multiplicity="1" />
+          <End Role="Item" Type="Self.Item" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ItemType">
+              <PropertyRef Name="ItemTypeId" />
+            </Principal>
+            <Dependent Role="Item">
+              <PropertyRef Name="ItemTypeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ItemStatusLog_Account">
+          <End Role="Account" Type="Self.Account" Multiplicity="0..1" />
+          <End Role="ItemStatusLog" Type="Self.ItemStatusLog" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Account">
+              <PropertyRef Name="AccountId" />
+            </Principal>
+            <Dependent Role="ItemStatusLog">
+              <PropertyRef Name="AccountId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ItemStatusLog_Item">
+          <End Role="Item" Type="Self.Item" Multiplicity="1" />
+          <End Role="ItemStatusLog" Type="Self.ItemStatusLog" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Item">
+              <PropertyRef Name="ItemId" />
+            </Principal>
+            <Dependent Role="ItemStatusLog">
+              <PropertyRef Name="ItemId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ItemStatusLog_ItemStatusType">
+          <End Role="ItemStatusType" Type="Self.ItemStatusType" Multiplicity="1" />
+          <End Role="ItemStatusLog" Type="Self.ItemStatusLog" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ItemStatusType">
+              <PropertyRef Name="ItemStatusTypeId" />
+            </Principal>
+            <Dependent Role="ItemStatusLog">
+              <PropertyRef Name="ItemStatusTypeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Login_Account">
+          <End Role="Account" Type="Self.Account" Multiplicity="1" />
+          <End Role="Login" Type="Self.Login" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Account">
+              <PropertyRef Name="AccountId" />
+            </Principal>
+            <Dependent Role="Login">
+              <PropertyRef Name="AccountId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Report_Account">
+          <End Role="Account" Type="Self.Account" Multiplicity="1" />
+          <End Role="Report" Type="Self.Report" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Account">
+              <PropertyRef Name="AccountId" />
+            </Principal>
+            <Dependent Role="Report">
+              <PropertyRef Name="AccountId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Report_ReportType">
+          <End Role="ReportType" Type="Self.ReportType" Multiplicity="1" />
+          <End Role="Report" Type="Self.Report" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ReportType">
+              <PropertyRef Name="ReportTypeId" />
+            </Principal>
+            <Dependent Role="Report">
+              <PropertyRef Name="ReportTypeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="LibraryModelStoreContainer">
+          <EntitySet Name="Account" EntityType="Self.Account" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="AccountStatusLog" EntityType="Self.AccountStatusLog" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="AccountStatusType" EntityType="Self.AccountStatusType" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Item" EntityType="Self.Item" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ItemStatusLog" EntityType="Self.ItemStatusLog" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ItemStatusType" EntityType="Self.ItemStatusType" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ItemType" EntityType="Self.ItemType" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Login" EntityType="Self.Login" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Report" EntityType="Self.Report" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ReportType" EntityType="Self.ReportType" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_AccountStatusLog_Account" Association="Self.FK_AccountStatusLog_Account">
+            <End Role="Account" EntitySet="Account" />
+            <End Role="AccountStatusLog" EntitySet="AccountStatusLog" />
+          </AssociationSet>
+          <AssociationSet Name="FK_AccountStatusLog_AccountStatusType" Association="Self.FK_AccountStatusLog_AccountStatusType">
+            <End Role="AccountStatusType" EntitySet="AccountStatusType" />
+            <End Role="AccountStatusLog" EntitySet="AccountStatusLog" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Item_ItemType" Association="Self.FK_Item_ItemType">
+            <End Role="ItemType" EntitySet="ItemType" />
+            <End Role="Item" EntitySet="Item" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ItemStatusLog_Account" Association="Self.FK_ItemStatusLog_Account">
+            <End Role="Account" EntitySet="Account" />
+            <End Role="ItemStatusLog" EntitySet="ItemStatusLog" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ItemStatusLog_Item" Association="Self.FK_ItemStatusLog_Item">
+            <End Role="Item" EntitySet="Item" />
+            <End Role="ItemStatusLog" EntitySet="ItemStatusLog" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ItemStatusLog_ItemStatusType" Association="Self.FK_ItemStatusLog_ItemStatusType">
+            <End Role="ItemStatusType" EntitySet="ItemStatusType" />
+            <End Role="ItemStatusLog" EntitySet="ItemStatusLog" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Login_Account" Association="Self.FK_Login_Account">
+            <End Role="Account" EntitySet="Account" />
+            <End Role="Login" EntitySet="Login" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Report_Account" Association="Self.FK_Report_Account">
+            <End Role="Account" EntitySet="Account" />
+            <End Role="Report" EntitySet="Report" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Report_ReportType" Association="Self.FK_Report_ReportType">
+            <End Role="ReportType" EntitySet="ReportType" />
+            <End Role="Report" EntitySet="Report" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="LibraryModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Account">
+          <Key>
+            <PropertyRef Name="AccountId" />
+          </Key>
+          <Property Name="AccountId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="FirstName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="LastName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="IsLibrarian" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="AccountStatusLogs" Relationship="Self.FK_AccountStatusLog_Account" FromRole="Account" ToRole="AccountStatusLog" />
+          <NavigationProperty Name="ItemStatusLogs" Relationship="Self.FK_ItemStatusLog_Account" FromRole="Account" ToRole="ItemStatusLog" />
+          <NavigationProperty Name="Logins" Relationship="Self.FK_Login_Account" FromRole="Account" ToRole="Login" />
+          <NavigationProperty Name="Reports" Relationship="Self.FK_Report_Account" FromRole="Account" ToRole="Report" />
+        </EntityType>
+        <EntityType Name="AccountStatusLog">
+          <Key>
+            <PropertyRef Name="AccountStatusLogId" />
+          </Key>
+          <Property Name="AccountStatusLogId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="AccountId" Type="Int32" Nullable="false" />
+          <Property Name="AccountStatusTypeId" Type="Byte" Nullable="false" />
+          <Property Name="LogDateTime" Type="DateTime" Nullable="false" Precision="3" />
+          <NavigationProperty Name="Account" Relationship="Self.FK_AccountStatusLog_Account" FromRole="AccountStatusLog" ToRole="Account" />
+          <NavigationProperty Name="AccountStatusType" Relationship="Self.FK_AccountStatusLog_AccountStatusType" FromRole="AccountStatusLog" ToRole="AccountStatusType" />
+        </EntityType>
+        <EntityType Name="AccountStatusType">
+          <Key>
+            <PropertyRef Name="AccountStatusTypeId" />
+          </Key>
+          <Property Name="AccountStatusTypeId" Type="Byte" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="StatusTypeName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="AccountStatusLogs" Relationship="Self.FK_AccountStatusLog_AccountStatusType" FromRole="AccountStatusType" ToRole="AccountStatusLog" />
+        </EntityType>
+        <EntityType Name="Item">
+          <Key>
+            <PropertyRef Name="ItemId" />
+          </Key>
+          <Property Name="ItemId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Title" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Author" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Genre" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="PublicationYear" Type="Int16" Nullable="false" />
+          <Property Name="ItemTypeId" Type="Byte" Nullable="false" />
+          <NavigationProperty Name="ItemType" Relationship="Self.FK_Item_ItemType" FromRole="Item" ToRole="ItemType" />
+          <NavigationProperty Name="ItemStatusLogs" Relationship="Self.FK_ItemStatusLog_Item" FromRole="Item" ToRole="ItemStatusLog" />
+        </EntityType>
+        <EntityType Name="ItemStatusLog">
+          <Key>
+            <PropertyRef Name="ItemStatusLogId" />
+          </Key>
+          <Property Name="ItemStatusLogId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ItemId" Type="Int32" Nullable="false" />
+          <Property Name="ItemStatusTypeId" Type="Byte" Nullable="false" />
+          <Property Name="LogDateTime" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="AccountId" Type="Int32" />
+          <NavigationProperty Name="Account" Relationship="Self.FK_ItemStatusLog_Account" FromRole="ItemStatusLog" ToRole="Account" />
+          <NavigationProperty Name="Item" Relationship="Self.FK_ItemStatusLog_Item" FromRole="ItemStatusLog" ToRole="Item" />
+          <NavigationProperty Name="ItemStatusType" Relationship="Self.FK_ItemStatusLog_ItemStatusType" FromRole="ItemStatusLog" ToRole="ItemStatusType" />
+        </EntityType>
+        <EntityType Name="ItemStatusType">
+          <Key>
+            <PropertyRef Name="ItemStatusTypeId" />
+          </Key>
+          <Property Name="ItemStatusTypeId" Type="Byte" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ItemStatusName" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="ItemStatusLogs" Relationship="Self.FK_ItemStatusLog_ItemStatusType" FromRole="ItemStatusType" ToRole="ItemStatusLog" />
+        </EntityType>
+        <EntityType Name="ItemType">
+          <Key>
+            <PropertyRef Name="ItemTypeId" />
+          </Key>
+          <Property Name="ItemTypeId" Type="Byte" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ItemTypeName" Type="String" MaxLength="10" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="Items" Relationship="Self.FK_Item_ItemType" FromRole="ItemType" ToRole="Item" />
+        </EntityType>
+        <EntityType Name="Login">
+          <Key>
+            <PropertyRef Name="LoginId" />
+          </Key>
+          <Property Name="LoginId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Username" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="PasswordHash" Type="String" MaxLength="128" FixedLength="true" Unicode="false" Nullable="false" />
+          <Property Name="IsPasswordTemporary" Type="Boolean" Nullable="false" />
+          <Property Name="AccountId" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Account" Relationship="Self.FK_Login_Account" FromRole="Login" ToRole="Account" />
+        </EntityType>
+        <EntityType Name="Report">
+          <Key>
+            <PropertyRef Name="ReportId" />
+          </Key>
+          <Property Name="ReportId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ReportDateTime" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="ReportTypeId" Type="Byte" Nullable="false" />
+          <Property Name="AccountId" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Account" Relationship="Self.FK_Report_Account" FromRole="Report" ToRole="Account" />
+          <NavigationProperty Name="ReportType" Relationship="Self.FK_Report_ReportType" FromRole="Report" ToRole="ReportType" />
+        </EntityType>
+        <EntityType Name="ReportType">
+          <Key>
+            <PropertyRef Name="ReportTypeId" />
+          </Key>
+          <Property Name="ReportTypeId" Type="Byte" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ReportTypeName" Type="String" MaxLength="10" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="Reports" Relationship="Self.FK_Report_ReportType" FromRole="ReportType" ToRole="Report" />
+        </EntityType>
+        <Association Name="FK_AccountStatusLog_Account">
+          <End Role="Account" Type="Self.Account" Multiplicity="1" />
+          <End Role="AccountStatusLog" Type="Self.AccountStatusLog" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Account">
+              <PropertyRef Name="AccountId" />
+            </Principal>
+            <Dependent Role="AccountStatusLog">
+              <PropertyRef Name="AccountId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ItemStatusLog_Account">
+          <End Role="Account" Type="Self.Account" Multiplicity="0..1" />
+          <End Role="ItemStatusLog" Type="Self.ItemStatusLog" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Account">
+              <PropertyRef Name="AccountId" />
+            </Principal>
+            <Dependent Role="ItemStatusLog">
+              <PropertyRef Name="AccountId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Login_Account">
+          <End Role="Account" Type="Self.Account" Multiplicity="1" />
+          <End Role="Login" Type="Self.Login" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Account">
+              <PropertyRef Name="AccountId" />
+            </Principal>
+            <Dependent Role="Login">
+              <PropertyRef Name="AccountId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Report_Account">
+          <End Role="Account" Type="Self.Account" Multiplicity="1" />
+          <End Role="Report" Type="Self.Report" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Account">
+              <PropertyRef Name="AccountId" />
+            </Principal>
+            <Dependent Role="Report">
+              <PropertyRef Name="AccountId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_AccountStatusLog_AccountStatusType">
+          <End Role="AccountStatusType" Type="Self.AccountStatusType" Multiplicity="1" />
+          <End Role="AccountStatusLog" Type="Self.AccountStatusLog" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AccountStatusType">
+              <PropertyRef Name="AccountStatusTypeId" />
+            </Principal>
+            <Dependent Role="AccountStatusLog">
+              <PropertyRef Name="AccountStatusTypeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Item_ItemType">
+          <End Role="ItemType" Type="Self.ItemType" Multiplicity="1" />
+          <End Role="Item" Type="Self.Item" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ItemType">
+              <PropertyRef Name="ItemTypeId" />
+            </Principal>
+            <Dependent Role="Item">
+              <PropertyRef Name="ItemTypeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ItemStatusLog_Item">
+          <End Role="Item" Type="Self.Item" Multiplicity="1" />
+          <End Role="ItemStatusLog" Type="Self.ItemStatusLog" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Item">
+              <PropertyRef Name="ItemId" />
+            </Principal>
+            <Dependent Role="ItemStatusLog">
+              <PropertyRef Name="ItemId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ItemStatusLog_ItemStatusType">
+          <End Role="ItemStatusType" Type="Self.ItemStatusType" Multiplicity="1" />
+          <End Role="ItemStatusLog" Type="Self.ItemStatusLog" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ItemStatusType">
+              <PropertyRef Name="ItemStatusTypeId" />
+            </Principal>
+            <Dependent Role="ItemStatusLog">
+              <PropertyRef Name="ItemStatusTypeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Report_ReportType">
+          <End Role="ReportType" Type="Self.ReportType" Multiplicity="1" />
+          <End Role="Report" Type="Self.Report" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ReportType">
+              <PropertyRef Name="ReportTypeId" />
+            </Principal>
+            <Dependent Role="Report">
+              <PropertyRef Name="ReportTypeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="LibraryEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Accounts" EntityType="Self.Account" />
+          <EntitySet Name="AccountStatusLogs" EntityType="Self.AccountStatusLog" />
+          <EntitySet Name="AccountStatusTypes" EntityType="Self.AccountStatusType" />
+          <EntitySet Name="Items" EntityType="Self.Item" />
+          <EntitySet Name="ItemStatusLogs" EntityType="Self.ItemStatusLog" />
+          <EntitySet Name="ItemStatusTypes" EntityType="Self.ItemStatusType" />
+          <EntitySet Name="ItemTypes" EntityType="Self.ItemType" />
+          <EntitySet Name="Logins" EntityType="Self.Login" />
+          <EntitySet Name="Reports" EntityType="Self.Report" />
+          <EntitySet Name="ReportTypes" EntityType="Self.ReportType" />
+          <AssociationSet Name="FK_AccountStatusLog_Account" Association="Self.FK_AccountStatusLog_Account">
+            <End Role="Account" EntitySet="Accounts" />
+            <End Role="AccountStatusLog" EntitySet="AccountStatusLogs" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ItemStatusLog_Account" Association="Self.FK_ItemStatusLog_Account">
+            <End Role="Account" EntitySet="Accounts" />
+            <End Role="ItemStatusLog" EntitySet="ItemStatusLogs" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Login_Account" Association="Self.FK_Login_Account">
+            <End Role="Account" EntitySet="Accounts" />
+            <End Role="Login" EntitySet="Logins" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Report_Account" Association="Self.FK_Report_Account">
+            <End Role="Account" EntitySet="Accounts" />
+            <End Role="Report" EntitySet="Reports" />
+          </AssociationSet>
+          <AssociationSet Name="FK_AccountStatusLog_AccountStatusType" Association="Self.FK_AccountStatusLog_AccountStatusType">
+            <End Role="AccountStatusType" EntitySet="AccountStatusTypes" />
+            <End Role="AccountStatusLog" EntitySet="AccountStatusLogs" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Item_ItemType" Association="Self.FK_Item_ItemType">
+            <End Role="ItemType" EntitySet="ItemTypes" />
+            <End Role="Item" EntitySet="Items" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ItemStatusLog_Item" Association="Self.FK_ItemStatusLog_Item">
+            <End Role="Item" EntitySet="Items" />
+            <End Role="ItemStatusLog" EntitySet="ItemStatusLogs" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ItemStatusLog_ItemStatusType" Association="Self.FK_ItemStatusLog_ItemStatusType">
+            <End Role="ItemStatusType" EntitySet="ItemStatusTypes" />
+            <End Role="ItemStatusLog" EntitySet="ItemStatusLogs" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Report_ReportType" Association="Self.FK_Report_ReportType">
+            <End Role="ReportType" EntitySet="ReportTypes" />
+            <End Role="Report" EntitySet="Reports" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="LibraryModelStoreContainer" CdmEntityContainer="LibraryEntities">
+          <EntitySetMapping Name="Accounts">
+            <EntityTypeMapping TypeName="LibraryModel.Account">
+              <MappingFragment StoreEntitySet="Account">
+                <ScalarProperty Name="AccountId" ColumnName="AccountId" />
+                <ScalarProperty Name="FirstName" ColumnName="FirstName" />
+                <ScalarProperty Name="LastName" ColumnName="LastName" />
+                <ScalarProperty Name="IsLibrarian" ColumnName="IsLibrarian" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="AccountStatusLogs">
+            <EntityTypeMapping TypeName="LibraryModel.AccountStatusLog">
+              <MappingFragment StoreEntitySet="AccountStatusLog">
+                <ScalarProperty Name="AccountStatusLogId" ColumnName="AccountStatusLogId" />
+                <ScalarProperty Name="AccountId" ColumnName="AccountId" />
+                <ScalarProperty Name="AccountStatusTypeId" ColumnName="AccountStatusTypeId" />
+                <ScalarProperty Name="LogDateTime" ColumnName="LogDateTime" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="AccountStatusTypes">
+            <EntityTypeMapping TypeName="LibraryModel.AccountStatusType">
+              <MappingFragment StoreEntitySet="AccountStatusType">
+                <ScalarProperty Name="AccountStatusTypeId" ColumnName="AccountStatusTypeId" />
+                <ScalarProperty Name="StatusTypeName" ColumnName="StatusTypeName" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Items">
+            <EntityTypeMapping TypeName="LibraryModel.Item">
+              <MappingFragment StoreEntitySet="Item">
+                <ScalarProperty Name="ItemId" ColumnName="ItemId" />
+                <ScalarProperty Name="Title" ColumnName="Title" />
+                <ScalarProperty Name="Author" ColumnName="Author" />
+                <ScalarProperty Name="Genre" ColumnName="Genre" />
+                <ScalarProperty Name="PublicationYear" ColumnName="PublicationYear" />
+                <ScalarProperty Name="ItemTypeId" ColumnName="ItemTypeId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ItemStatusLogs">
+            <EntityTypeMapping TypeName="LibraryModel.ItemStatusLog">
+              <MappingFragment StoreEntitySet="ItemStatusLog">
+                <ScalarProperty Name="ItemStatusLogId" ColumnName="ItemStatusLogId" />
+                <ScalarProperty Name="ItemId" ColumnName="ItemId" />
+                <ScalarProperty Name="ItemStatusTypeId" ColumnName="ItemStatusTypeId" />
+                <ScalarProperty Name="LogDateTime" ColumnName="LogDateTime" />
+                <ScalarProperty Name="AccountId" ColumnName="AccountId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ItemStatusTypes">
+            <EntityTypeMapping TypeName="LibraryModel.ItemStatusType">
+              <MappingFragment StoreEntitySet="ItemStatusType">
+                <ScalarProperty Name="ItemStatusTypeId" ColumnName="ItemStatusTypeId" />
+                <ScalarProperty Name="ItemStatusName" ColumnName="ItemStatusName" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ItemTypes">
+            <EntityTypeMapping TypeName="LibraryModel.ItemType">
+              <MappingFragment StoreEntitySet="ItemType">
+                <ScalarProperty Name="ItemTypeId" ColumnName="ItemTypeId" />
+                <ScalarProperty Name="ItemTypeName" ColumnName="ItemTypeName" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Logins">
+            <EntityTypeMapping TypeName="LibraryModel.Login">
+              <MappingFragment StoreEntitySet="Login">
+                <ScalarProperty Name="LoginId" ColumnName="LoginId" />
+                <ScalarProperty Name="Username" ColumnName="Username" />
+                <ScalarProperty Name="PasswordHash" ColumnName="PasswordHash" />
+                <ScalarProperty Name="IsPasswordTemporary" ColumnName="IsPasswordTemporary" />
+                <ScalarProperty Name="AccountId" ColumnName="AccountId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Reports">
+            <EntityTypeMapping TypeName="LibraryModel.Report">
+              <MappingFragment StoreEntitySet="Report">
+                <ScalarProperty Name="ReportId" ColumnName="ReportId" />
+                <ScalarProperty Name="ReportDateTime" ColumnName="ReportDateTime" />
+                <ScalarProperty Name="ReportTypeId" ColumnName="ReportTypeId" />
+                <ScalarProperty Name="AccountId" ColumnName="AccountId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ReportTypes">
+            <EntityTypeMapping TypeName="LibraryModel.ReportType">
+              <MappingFragment StoreEntitySet="ReportType">
+                <ScalarProperty Name="ReportTypeId" ColumnName="ReportTypeId" />
+                <ScalarProperty Name="ReportTypeName" ColumnName="ReportTypeName" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
