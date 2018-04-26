@@ -6,6 +6,7 @@
 
 
     <h2 id="catalogitemTitle">Catalog Items</h2>
+    <a style="text-align: right" class="btn btn-outline-info" href="/CatalogManagement/CreateItem">Add New Item</a>
 <hr />
     <div>
         @*<div class="row">
@@ -26,6 +27,7 @@
                         </div>
                         <div class="card-footer">
                             <a class="btn btn-primary" href="/CatalogManagement/ItemDetails?id=@item.ItemId">View Details</a>
+                            <a class="btn btn-danger" href="/CatalogManagement/DeleteItem?id=@item.ItemId">Delete Item</a>
                         </div>
                     </div>
                 </div>

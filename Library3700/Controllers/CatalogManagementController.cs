@@ -12,19 +12,35 @@ namespace Library3700.Controllers
 {
     public class CatalogManagementController : Controller
     {
-        LibraryEntities db = new LibraryEntities();
        
-        //Index that will return a list of library books with the information to view
+       
+        /// <summary>
+        ///         Index that will return a list of library books with the information to view
+        /// </summary>
         public ActionResult Index()
         {
-            List<Item> items = db.Items.Where(x => x.ItemId != 0).ToList();
-            CatalogItemViewModel catalogItemViewModel = new CatalogItemViewModel();
-            catalogItemViewModel.catalogItemList = items;
+            using(LibraryEntities db = new LibraryEntities())
+            {
+                try
+                {
+                    List<Item> items = db.Items.Where(x => x.ItemId != 0).ToList();
+                    CatalogItemViewModel catalogItemViewModel = new CatalogItemViewModel();
+                    catalogItemViewModel.catalogItemList = items;
 
-            return View(catalogItemViewModel);
+                    return View(catalogItemViewModel);
+                }
+                catch
+                {
+                    return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+
+                }
+               
+            }
         }
 
-        //Get create item view
+        /// <summary>
+        ///  Get create item view
+        /// </summary>
         [HttpGet] 
         public ActionResult CreateItem()
         {
@@ -37,63 +53,124 @@ namespace Library3700.Controllers
         {
             //create new item
             Item item = new Item();
-
-            try
+            using (LibraryEntities db = new LibraryEntities())
             {
-                //set item equal to view model object
-                item.Author = catalogItem.Author;
-                item.Title = catalogItem.Title;
-                item.Genre = catalogItem.Genre;
-                item.PublicationYear = catalogItem.PublicationYear;
-                //needs to be changed but setting everything to book right now
-                catalogItem.ItemTypeID = 1;
-                item.ItemTypeId = catalogItem.ItemTypeID;
-                item.ItemType = db.ItemTypes.Where(x => x.ItemTypeId == 1).FirstOrDefault();
-                if (ModelState.IsValid)
+                try
                 {
-                    db.Items.Add(item);
-                    db.SaveChanges();
-                    return Json(new { success = "true"});
+                    //set item equal to view model object
+                    item.Author = catalogItem.Author;
+                    item.Title = catalogItem.Title;
+                    item.Genre = catalogItem.Genre;
+                    item.PublicationYear = catalogItem.PublicationYear;
+                    //needs to be changed but setting everything to book right now
+                    catalogItem.ItemTypeID = 1;
+                    item.ItemTypeId = catalogItem.ItemTypeID;
+                    item.ItemType = db.ItemTypes.Where(x => x.ItemTypeId == catalogItem.ItemTypeID).FirstOrDefault();
+                    if (ModelState.IsValid)
+                    {
+                        db.Items.Add(item);
+                        db.SaveChanges();
+                        return Json(new { success = "true" });
+                    }
                 }
+                catch (DataException)
+                {
+                    return Json(new { sucess = "false" });
+                }
+                return View(item);
             }
-            catch (DataException )
-            {
-                return Json(new {sucess = "false" });
-            }
-            return View(item);
         }
+        
 
         [HttpGet]
         //finds an item by the item id and returns the item to the details view
         public ActionResult ItemDetails(int id)
         {
-            try
+            using (LibraryEntities db = new LibraryEntities())
             {
-                if (id == 0)
+                try
+                {
+                    if (id == 0)
+                    {
+                        return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                    }
+                    CatalogItemViewModel catalogItemViewModel = new CatalogItemViewModel();
+                    catalogItemViewModel.Item = db.Items.Find(id);
+                    if (catalogItemViewModel == null)
+                    {
+                        return HttpNotFound();
+                    }
+                    return View(catalogItemViewModel);
+                }
+                catch
                 {
                     return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
                 }
-                CatalogItemViewModel catalogItemViewModel = new CatalogItemViewModel();
-                catalogItemViewModel.Item = db.Items.Find(id);
-                if (catalogItemViewModel == null)
-                {
-                    return HttpNotFound();
-                }
-                return View(catalogItemViewModel);
-            }
-            catch
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
         }
 
-        public ActionResult EditItem(int id)
+        [HttpPost]
+        public ActionResult EditItem(CatalogItemViewModel catalogItem)
         {
-            return View();
+            using (LibraryEntities db = new LibraryEntities())
+            {
+                //create new item to save edit item too
+                Item item = db.Items.Find(catalogItem.ItemID);
+
+                try
+                {
+                    //set item equal to view model object
+                    item.Author = catalogItem.Author;
+                    item.Title = catalogItem.Title;
+                    item.Genre = catalogItem.Genre;
+                    item.PublicationYear = catalogItem.PublicationYear;
+                    //needs to be changed but setting everything to book right now
+                    catalogItem.ItemTypeID = 1;
+                    item.ItemTypeId = catalogItem.ItemTypeID;
+                    item.ItemType = db.ItemTypes.Where(x => x.ItemTypeId == catalogItem.ItemTypeID).FirstOrDefault();
+                    if (ModelState.IsValid)
+                    {
+                        db.SaveChanges();
+                        return Json(new { success = "true" });
+                    }
+                }
+                catch (DataException)
+                {
+                    return Json(new { sucess = "false" });
+                }
+                return View(item);
+            }
         }
+
+      
+       
+        /// <summary>
+        /// arhcives an item
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         public ActionResult DeleteItem(int id)
         {
-            return View();
+            using (LibraryEntities db = new LibraryEntities())
+            {
+                try
+                {
+                    Item item = db.Items.Find(id);
+                    List<ItemStatusLog> itemStatusList = db.ItemStatusLogs.Where(x => x.ItemId == id).ToList();
+                    foreach (var itemstatus in itemStatusList)
+                    {
+                        db.ItemStatusLogs.Remove(itemstatus);
+                        db.SaveChanges();
+                    }
+                    db.Items.Remove(item);
+                    db.SaveChanges();
+                }
+                catch
+                {
+                    return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                }
+                return View("Index");
+            }
         }
 
     }
