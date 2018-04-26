@@ -340,8 +340,6 @@
       <DependentUpon>LibraryModel.edmx</DependentUpon>
     </Content>
     <None Include="packages.config" />
-    <Content Include="Views\_ViewStart.cshtml" />
-    <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Views\CatalogManagement\Index.cshtml" />
     <Content Include="Views\CatalogManagement\ItemDetails.cshtml" />
     <Content Include="Views\CatalogManagement\CreateItem.cshtml" />

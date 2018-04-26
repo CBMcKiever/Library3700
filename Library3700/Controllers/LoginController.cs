@@ -32,7 +32,7 @@ namespace Library3700.Controllers
             // don't show login page to user already logged in
             if (Request.IsAuthenticated)
             {
-                return Redirect(returnUrl);
+                return Redirect(GetRedirectUrl(returnUrl));
             }
             else
             {
