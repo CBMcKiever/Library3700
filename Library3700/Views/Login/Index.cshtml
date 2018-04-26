@@ -1,0 +1,21 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Login</h2>
+<form action="/Login/Login" method="post">
+    Username: <input type="text" name="UserName" />
+    Password: <input type="password" name="Password" />
+    <input type="hidden" name="PasswordHash" />
+    <input type="submit" value="Submit" />
+</form>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/js-sha512/0.7.1/sha512.min.js"></script>
+<script>
+    $("input[name=Password").change(function () {
+        var password = $(this).val();
+        var passwordHash = sha512(password);
+        $("input[name=PasswordHash]").val(passwordHash);
+    });
+</script>
+
