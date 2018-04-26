@@ -1,0 +1,44 @@
+﻿@model Library3700.Models.ViewModels.CatalogItemViewModel
+
+@{
+    ViewBag.Title = "Catalog";
+}
+
+
+    <h2 id="catalogitemTitle">Catalog Items</h2>
+<hr />
+    <div>
+        @*<div class="row">
+            
+            <input name="search" placeholder="Start typing here" type="text" data-toggle="hideseek" data-list=".list" id="search" /><span class="fas fa-search" style="float: right; display: inline-block"></span>
+        </div>*@
+        <div class="list">
+            <div class="row col-md-12">
+                @foreach (var item in Model.catalogItemList)
+            {
+                <div class="col-sm-4">
+                    <div class="card">
+                        <div class="card-header">Title: @item.Title</div>
+                        <div class="card-body">
+                            <div>Author: @item.Author</div>
+                            <div>Genre: @item.Genre</div>
+                            <div>Publication Year: @item.PublicationYear</div>
+                        </div>
+                        <div class="card-footer">
+                            <a class="btn btn-primary" href="/CatalogManagement/ItemDetails?id=@item.ItemId">View Details</a>
+                        </div>
+                    </div>
+                </div>
+        }
+            </div>
+        </div>
+    </div>
+    <head>
+        <link href="~/Content/CSS/CatalogCSS.css" rel="stylesheet" />
+        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.10/css/all.css" integrity="sha384-+d0P83n9kaQMCwj8F4RJB66tzIwOKmrdb46+porD/OvrJ+37WqIM7UoBtwHO6Nlg" crossorigin="anonymous">
+        <link href="~/Content/bootstrap.css" rel="stylesheet" />
+        <script src="~/Scripts/bootstrap.bundle.js"></script>
+        <script src="~/Scripts/jquery-3.3.1.min.js"></script>
+        <script src="~/Scripts/bootstrap.min.js"></script>
+        <script src="~/Scripts/HideSeek-master/jquery.hideseek.min.js"></script>
+    </head>

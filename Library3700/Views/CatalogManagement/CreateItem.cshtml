@@ -1,0 +1,45 @@
+﻿@model Library3700.Models.ViewModels.CatalogItemViewModel
+@{
+    ViewBag.Title = "CreateItem";
+}
+
+<h2>Create New Item</h2>
+<div class="container">
+    <div class="form-group">
+        @Html.LabelFor(model => model.Title, new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.TextBoxFor(model => model.Title, new { id = "ItemTitle" })
+            @Html.ValidationMessageFor(model => model.Title)
+        </div>
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(model => model.Author, new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.TextBoxFor(model => model.Author, new { id = "ItemAuthor" })
+            @Html.ValidationMessageFor(model => model.Author)
+        </div>
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(model => model.Genre, new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.TextBoxFor(model => model.Genre, new { id = "ItemGenre" })
+            @Html.ValidationMessageFor(model => model.Genre)
+        </div>
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(model => model.PublicationYear, new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.TextBoxFor(model => model.PublicationYear, new { id = "ItemPublicationYear", type = "number"})
+            @Html.ValidationMessageFor(model => model.PublicationYear)
+        </div>
+    </div>
+    <div>
+        <input class="btn btn-success" value="Cancel" type="button" />
+        <input class="btn btn-primary" value="Submit" type="submit" id="submitButton"/>
+    </div>
+</div>
+
+<head>
+    <script src="~/Scripts/jquery-3.3.1.min.js"></script>
+    <script src="~/Scripts/javascript/catalogitem.js"></script>
+</head>

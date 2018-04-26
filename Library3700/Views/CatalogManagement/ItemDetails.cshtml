@@ -1,0 +1,41 @@
+﻿@model Library3700.Models.ViewModels.CatalogItemViewModel
+@{
+    ViewBag.Title = "ItemDetails";
+}
+
+<a href="/CatalogManagement/Index">Back to Library Catalog</a>
+
+<h2>Item Details</h2>
+<div>
+    <div id="header1">
+        @Html.DisplayNameFor(model => model.Item.Title)
+    </div>
+    <div>
+        @Html.DisplayFor(x => x.Item.Title)
+    </div>
+    <br />
+    <div id="header1">
+        @Html.DisplayNameFor(x => x.Item.Author)
+    </div>
+    <div>
+        @Html.DisplayFor(x => x.Item.Author)
+    </div>
+    <br />
+    <div id="header1">
+        @Html.DisplayNameFor(x => x.Item.Genre)
+    </div>
+    <div>
+        @Html.DisplayFor(x => x.Item.Genre)
+    </div>
+    <br />
+    <div id="header1">
+        @Html.DisplayNameFor(x => x.Item.PublicationYear)
+    </div>
+    <div>
+        @Html.DisplayFor(x => x.Item.PublicationYear)
+    </div>
+</div>
+
+<head>
+    <link href="~/Content/CSS/ItemDetailsCSS.css" rel="stylesheet" />
+</head>

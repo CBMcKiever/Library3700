@@ -1,0 +1,17 @@
+﻿#catalogitemTitle {
+    text-align: center;
+    font-size: 30px;
+    font-weight: bold;
+}
+
+#search {
+    margin: 15px;
+    padding: 5px;
+    float: right;
+    border: 1px solid rgba(0, 0, 0, 0.125);
+    border-radius: 0.25rem;
+}
+
+.card {
+    margin-bottom: 10px;
+}
