@@ -13,27 +13,33 @@
             
             <input name="search" placeholder="Start typing here" type="text" data-toggle="hideseek" data-list=".list" id="search" /><span class="fas fa-search" style="float: right; display: inline-block"></span>
         </div>*@
-        <div class="list">
-            <div class="row col-md-12">
-                @foreach (var item in Model.catalogItemList)
+
+        <table class="table">
+            <thead>
+                <tr>
+                    <th scope="col">Title</th>
+                    <th scope="col">Author</th>
+                    <th scope="col">Genre</th>
+                    <th scope="col">Published</th>
+                    <th scope="col">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+            @foreach(var item in Model.catalogItemList)
             {
-                <div class="col-sm-4">
-                    <div class="card">
-                        <div class="card-header">Title: @item.Title</div>
-                        <div class="card-body">
-                            <div>Author: @item.Author</div>
-                            <div>Genre: @item.Genre</div>
-                            <div>Publication Year: @item.PublicationYear</div>
-                        </div>
-                        <div class="card-footer">
-                            <a class="btn btn-primary" href="/CatalogManagement/ItemDetails?id=@item.ItemId">View Details</a>
-                            <a class="btn btn-danger" href="/CatalogManagement/DeleteItem?id=@item.ItemId">Delete Item</a>
-                        </div>
-                    </div>
-                </div>
-        }
-            </div>
-        </div>
+                <tr data-item-id=@item.ItemId>
+                    <td>@item.Title</td>
+                    <td>@item.Author</td>
+                    <td>@item.Genre</td>
+                    <td>@item.PublicationYear</td>
+                    <td>
+                        <a class="btn btn-primary" href="/CatalogManagement/ItemDetails?id=@item.ItemId">View Details</a>
+                        <a class="btn btn-danger" href="/CatalogManagement/DeleteItem?id=@item.ItemId">Delete Item</a>
+                    </td>
+                </tr>
+            }
+            </tbody>
+        </table>
     </div>
     <head>
         <link href="~/Content/CSS/CatalogCSS.css" rel="stylesheet" />
