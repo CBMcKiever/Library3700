@@ -26,7 +26,7 @@
                 FirstName: $("input[name=FirstName]").val(),
                 LastName: $("input[name=LastName]").val(),
                 EmailAddress: $("input[name=EmailAddress]").val(),
-                IsLibrarian: $("input[name=IsLibrarian]").val() === "on" ? true : false,
+                IsLibrarian: $("input[name=IsLibrarian]").checked
             };
 
             $.post(url, data, function (response) {
