@@ -64,13 +64,13 @@ namespace Library3700.Controllers
                     item.Title = catalogItem.Title;
                     item.Genre = catalogItem.Genre;
                     item.PublicationYear = catalogItem.PublicationYear;
-                    if (catalogItem.ItemTypeName == "book")
+                    if (catalogItem.ItemTypeName.ToLower() == "book")
                     {
                         catalogItem.ItemTypeId = 1;
                         item.ItemTypeId = catalogItem.ItemTypeId;
                         item.ItemType = db.ItemTypes.Where(x => x.ItemTypeId == catalogItem.ItemTypeId).FirstOrDefault();
                     }
-                    if (catalogItem.ItemTypeName == "audiobook")
+                    if (catalogItem.ItemTypeName.ToLower() == "audiobook")
                     {
                         catalogItem.ItemTypeId = 2;
                         item.ItemTypeId = catalogItem.ItemTypeId;
@@ -164,13 +164,13 @@ namespace Library3700.Controllers
                     item.Title = catalogItem.Title;
                     item.Genre = catalogItem.Genre;
                     item.PublicationYear = catalogItem.PublicationYear;
-                    if (catalogItem.ItemTypeName == "book")
+                    if (catalogItem.ItemTypeName.ToLower() == "book")
                     {
                         catalogItem.ItemTypeId = 1;
                         item.ItemTypeId = catalogItem.ItemTypeId;
                         item.ItemType = db.ItemTypes.Where(x => x.ItemTypeId == catalogItem.ItemTypeId).FirstOrDefault();
                     }
-                    if (catalogItem.ItemTypeName == "audiobook")
+                    if (catalogItem.ItemTypeName.ToLower() == "audiobook")
                     {
                         catalogItem.ItemTypeId = 2;
                         item.ItemTypeId = catalogItem.ItemTypeId;
