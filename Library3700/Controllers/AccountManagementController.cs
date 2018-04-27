@@ -41,6 +41,8 @@ namespace Library3700.Controllers
                     LibrarianLastName = claims.Where(x => x.Type == ClaimTypes.Surname).Single().Value,
                     LibrarianId = Int32.Parse(claims.Where(x => x.Type == ClaimTypes.UserData).Single().Value)
                 };
+
+                return View("LibrarianHome");
             }
             else if (ClaimsPrincipal.Current.IsInRole("patron"))
             {
@@ -51,12 +53,12 @@ namespace Library3700.Controllers
                     PatronLastName = claims.Where(x => x.Type == ClaimTypes.Surname).Single().Value,
                     PatronId = Int32.Parse(claims.Where(x => x.Type == ClaimTypes.UserData).Single().Value)
                 };
+                return View("PatronHome");
             }
             else
             {
                 return RedirectToAction("LogOut", "Login");
             }
-            return View();
         }
         
         /// <summary>

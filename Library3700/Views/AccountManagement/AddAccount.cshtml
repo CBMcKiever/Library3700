@@ -3,5 +3,39 @@
     ViewBag.Title = "AddAccount";
 }
 
-<h2>AddAccount</h2>
+<br />
+@Html.ActionLink("< Back", "Home", "AccountManagement")
+<br />
+<br />
+<h2>Add an Account</h2>
+<br />
+<div id="form">
+    <input type="text" placeholder="First Name" name="FirstName" />
+    <input type="text" placeholder="Last Name" name="LastName" /> <br /><br />
 
+    <input type="text" placeholder="Email" name="EmailAddress" /> <br /><br />
+    Librarian? <input type="checkbox" name="IsLibrarian" /> <br /> <br />
+    <input class="btn btn-primary" id="submit" type="button" value="Submit" />
+</div>
+
+<script>
+    $(function () {
+        $("#submit").click(function () {
+            var url = "/AccountManagement/RegisterNewAccount";
+            var data = {
+                FirstName: $("input[name=FirstName]").val(),
+                LastName: $("input[name=LastName]").val(),
+                EmailAddress: $("input[name=EmailAddress]").val(),
+                IsLibrarian: $("input[name=IsLibrarian]").val() === "on" ? true : false,
+            };
+
+            $.post(url, data, function (response) {
+                alert(response.Message);
+                $("input[type=text]").each(function () {
+                    $(this).val("");
+                });
+                $("input[type=checkbox]").checked = false;
+            });
+        });
+    });
+</script>

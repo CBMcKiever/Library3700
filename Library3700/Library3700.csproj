@@ -362,6 +362,8 @@
     <Content Include="Views\AccountManagement\Home.cshtml" />
     <Content Include="Views\AccountManagement\AddAccount.cshtml" />
     <Content Include="Views\CatalogManagement\EditItem.cshtml" />
+    <Content Include="Views\AccountManagement\PatronHome.cshtml" />
+    <Content Include="Views\AccountManagement\LibrarianHome.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

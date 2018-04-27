@@ -4,14 +4,18 @@
     ViewBag.Title = "Catalog";
 }
 
+<br />
+@Html.ActionLink("< Back", "Home", "AccountManagement")
+<br />
+<br />
 
-    <h2 id="catalogitemTitle">Catalog Items</h2>
-    <a style="text-align: right" class="btn btn-outline-info" href="/CatalogManagement/CreateItem">Add New Item</a>
+<h2 id="catalogitemTitle">Catalog Items</h2>
+<a style="text-align: right" class="btn btn-outline-info" href="/CatalogManagement/CreateItem">Add New Item</a>
 <hr />
 <div>
     <div class="row col-md-12">
-            <input type="text" id="searchCatalog" onkeyup="catalogSearchFunction()" placeholder="&#xf002 Search By Title..." title="Type in an item name" class="fas fa-search"/>
-        </div>
+        <input type="text" id="searchCatalog" onkeyup="catalogSearchFunction()" placeholder="&#xf002 Search By Title..." title="Type in an item name" class="fas fa-search" />
+    </div>
     @if (Model == null)
     {
         <h3>There are no items in the Library Catalog to view.</h3>
@@ -67,12 +71,12 @@
         }
     }
 </script>
-    <head>
-        <link href="~/Content/CSS/CatalogCSS.css" rel="stylesheet" />
-        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.10/css/all.css" integrity="sha384-+d0P83n9kaQMCwj8F4RJB66tzIwOKmrdb46+porD/OvrJ+37WqIM7UoBtwHO6Nlg" crossorigin="anonymous">
-        <link href="~/Content/bootstrap.css" rel="stylesheet" />
-        <script src="~/Scripts/bootstrap.bundle.js"></script>
-        <script src="~/Scripts/jquery-3.3.1.min.js"></script>
-        <script src="~/Scripts/bootstrap.min.js"></script>
-        <script src="~/Scripts/HideSeek-master/jquery.hideseek.min.js"></script>
-    </head>
+<head>
+    <link href="~/Content/CSS/CatalogCSS.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.10/css/all.css" integrity="sha384-+d0P83n9kaQMCwj8F4RJB66tzIwOKmrdb46+porD/OvrJ+37WqIM7UoBtwHO6Nlg" crossorigin="anonymous">
+    <link href="~/Content/bootstrap.css" rel="stylesheet" />
+    <script src="~/Scripts/bootstrap.bundle.js"></script>
+    <script src="~/Scripts/jquery-3.3.1.min.js"></script>
+    <script src="~/Scripts/bootstrap.min.js"></script>
+    <script src="~/Scripts/HideSeek-master/jquery.hideseek.min.js"></script>
+</head>
