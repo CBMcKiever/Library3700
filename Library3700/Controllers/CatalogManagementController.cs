@@ -31,7 +31,7 @@ namespace Library3700.Controllers
                 }
                 catch
                 {
-                    return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                    return new HttpStatusCodeResult(HttpStatusCode.InternalServerError);
 
                 }
                
@@ -92,7 +92,7 @@ namespace Library3700.Controllers
                 {
                     if (id == 0)
                     {
-                        return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                        return new HttpStatusCodeResult(HttpStatusCode.InternalServerError);
                     }
                     CatalogItemViewModel catalogItemViewModel = new CatalogItemViewModel();
                     catalogItemViewModel.Item = db.Items.Find(id);
@@ -104,7 +104,7 @@ namespace Library3700.Controllers
                 }
                 catch
                 {
-                    return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                    return new HttpStatusCodeResult(HttpStatusCode.InternalServerError);
                 }
             }
         }
@@ -167,7 +167,7 @@ namespace Library3700.Controllers
                 }
                 catch
                 {
-                    return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                    return new HttpStatusCodeResult(HttpStatusCode.InternalServerError);
                 }
                 return View("Index");
             }

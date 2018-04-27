@@ -17,13 +17,13 @@
         var catalogItem = getItem();
         $.ajax({
             type: "POST",
-            url: "\CreateItem",
+            url: "/CatalogManagement/CreateItem",
             datatype: 'json',
             contentType: "application/json; charset=utf-8",
             data: JSON.stringify({ catalogItem: catalogItem }),
             success: function () {
                 alert('New item created.');
-                window.location.href = "\Index"
+                window.location.href = "/CatalogManagement/Index"
             },
             error: function () {
                 alert('Unable to create new item. Please try again.');
