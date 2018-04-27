@@ -4,14 +4,10 @@
     font-weight: bold;
 }
 
-#search {
-    margin: 15px;
-    padding: 5px;
-    float: right;
-    border: 1px solid rgba(0, 0, 0, 0.125);
-    border-radius: 0.25rem;
-}
-
-.card {
-    margin-bottom: 10px;
+#searchCatalog {
+    width: 100%;
+    font-size: 16px;
+    padding: 8px 0px 8px 10px;
+    border: 1px solid #ddd;
+    margin-bottom: 12px;
 }
