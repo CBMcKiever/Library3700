@@ -19,7 +19,9 @@ namespace Library3700.Controllers
         /// </summary>
         public ActionResult Index()
         {
-            using(LibraryEntities db = new LibraryEntities())
+            using(
+                
+                LibraryEntities db = new LibraryEntities())
             {
                 try
                 {
@@ -41,10 +43,10 @@ namespace Library3700.Controllers
         /// <summary>
         ///  Get create item view
         /// </summary>
-        [HttpGet] 
+        [HttpGet]
         public ActionResult CreateItem()
         {
-            return View("CreateItem");
+            return View();
         }
 
         //post method to create an item
@@ -62,10 +64,18 @@ namespace Library3700.Controllers
                     item.Title = catalogItem.Title;
                     item.Genre = catalogItem.Genre;
                     item.PublicationYear = catalogItem.PublicationYear;
-                    //needs to be changed but setting everything to book right now
-                    catalogItem.ItemTypeID = 1;
-                    item.ItemTypeId = catalogItem.ItemTypeID;
-                    item.ItemType = db.ItemTypes.Where(x => x.ItemTypeId == catalogItem.ItemTypeID).FirstOrDefault();
+                    if (catalogItem.ItemTypeName == "book")
+                    {
+                        catalogItem.ItemTypeId = 1;
+                        item.ItemTypeId = catalogItem.ItemTypeId;
+                        item.ItemType = db.ItemTypes.Where(x => x.ItemTypeId == catalogItem.ItemTypeId).FirstOrDefault();
+                    }
+                    if (catalogItem.ItemTypeName == "audiobook")
+                    {
+                        catalogItem.ItemTypeId = 2;
+                        item.ItemTypeId = catalogItem.ItemTypeId;
+                        item.ItemType = db.ItemTypes.Where(x => x.ItemTypeId == catalogItem.ItemTypeId).FirstOrDefault();
+                    }
                     if (ModelState.IsValid)
                     {
                         db.Items.Add(item);
@@ -96,6 +106,7 @@ namespace Library3700.Controllers
                     }
                     CatalogItemViewModel catalogItemViewModel = new CatalogItemViewModel();
                     catalogItemViewModel.Item = db.Items.Find(id);
+                    catalogItemViewModel.ItemTypeName = db.Items.Where(x => x.ItemTypeId == x.ItemType.ItemTypeId).Select(f => f.ItemType.ItemTypeName).FirstOrDefault();
                     if (catalogItemViewModel == null)
                     {
                         return HttpNotFound();
@@ -108,6 +119,35 @@ namespace Library3700.Controllers
                 }
             }
         }
+
+        [HttpGet]
+        public ActionResult EditItem(int id)
+        {
+            using (LibraryEntities db = new LibraryEntities())
+            {
+                try
+                {
+                    if (id == 0)
+                    {
+                        return new HttpStatusCodeResult(HttpStatusCode.InternalServerError);
+                    }
+                    CatalogItemViewModel catalogItemViewModel = new CatalogItemViewModel();
+                    catalogItemViewModel.Item = db.Items.Find(id);
+                    catalogItemViewModel.ItemTypeName = db.Items.Where(x => x.ItemTypeId == x.ItemType.ItemTypeId).Select(f => f.ItemType.ItemTypeName).FirstOrDefault();
+                    if (catalogItemViewModel == null)
+                    {
+                        return HttpNotFound();
+                    }
+                    return View(catalogItemViewModel);
+                }
+                catch
+                {
+                    return new HttpStatusCodeResult(HttpStatusCode.InternalServerError);
+                }
+            }
+
+        }
+
 
         [HttpPost]
         public ActionResult EditItem(CatalogItemViewModel catalogItem)
@@ -124,10 +164,18 @@ namespace Library3700.Controllers
                     item.Title = catalogItem.Title;
                     item.Genre = catalogItem.Genre;
                     item.PublicationYear = catalogItem.PublicationYear;
-                    //needs to be changed but setting everything to book right now
-                    catalogItem.ItemTypeID = 1;
-                    item.ItemTypeId = catalogItem.ItemTypeID;
-                    item.ItemType = db.ItemTypes.Where(x => x.ItemTypeId == catalogItem.ItemTypeID).FirstOrDefault();
+                    if (catalogItem.ItemTypeName == "book")
+                    {
+                        catalogItem.ItemTypeId = 1;
+                        item.ItemTypeId = catalogItem.ItemTypeId;
+                        item.ItemType = db.ItemTypes.Where(x => x.ItemTypeId == catalogItem.ItemTypeId).FirstOrDefault();
+                    }
+                    if (catalogItem.ItemTypeName == "audiobook")
+                    {
+                        catalogItem.ItemTypeId = 2;
+                        item.ItemTypeId = catalogItem.ItemTypeId;
+                        item.ItemType = db.ItemTypes.Where(x => x.ItemTypeId == catalogItem.ItemTypeId).FirstOrDefault();
+                    }
                     if (ModelState.IsValid)
                     {
                         db.SaveChanges();
@@ -152,16 +200,16 @@ namespace Library3700.Controllers
         public ActionResult DeleteItem(int id)
         {
             using (LibraryEntities db = new LibraryEntities())
-            {
+           {
                 try
                 {
                     Item item = db.Items.Find(id);
-                    List<ItemStatusLog> itemStatusList = db.ItemStatusLogs.Where(x => x.ItemId == id).ToList();
-                    foreach (var itemstatus in itemStatusList)
-                    {
-                        db.ItemStatusLogs.Remove(itemstatus);
-                        db.SaveChanges();
-                    }
+                    //List<ItemStatusLog> itemStatusList = db.ItemStatusLogs.Where(x => x.ItemId == id).ToList();
+                    //foreach (var itemstatus in itemStatusList)
+                    //{
+                    //    db.ItemStatusLogs.Remove(itemstatus);
+                    //    db.SaveChanges();
+                    //}
                     db.Items.Remove(item);
                     db.SaveChanges();
                 }
@@ -175,3 +223,4 @@ namespace Library3700.Controllers
 
     }
 }
+           

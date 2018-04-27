@@ -1,0 +1,54 @@
+﻿@model Library3700.Models.ViewModels.CatalogItemViewModel
+
+@{
+    ViewBag.Title = "EditItem";
+}
+<!--TO DO: ADD ITEM TYPE-->
+<h2>Edit Item</h2>
+<input type="hidden" id="itemID" value="@Model.Item.ItemId"/>
+<div class="container">
+    <div class="form-group">
+        @Html.LabelFor(model => model.Item.Title, new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.TextBoxFor(model => model.Item.Title, new { id = "ItemTitle" })
+            @Html.ValidationMessageFor(model => model.Item.Title)
+        </div>
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(model => model.Item.Author, new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.TextBoxFor(model => model.Item.Author, new { id = "ItemAuthor" })
+            @Html.ValidationMessageFor(model => model.Item.Author)
+        </div>
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(model => model.ItemType, "Select Item Type:", new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            <input type="radio" name="ItemType" value="Book" />Book
+            <input type="radio" name="ItemType" value="AudioBook" />AudioBook
+        </div>
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(model => model.Item.Genre, new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.TextBoxFor(model => model.Item.Genre, new { id = "ItemGenre" })
+            @Html.ValidationMessageFor(model => model.Item.Genre)
+        </div>
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(model => model.Item.PublicationYear, new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.TextBoxFor(model => model.Item.PublicationYear, new { id = "ItemPublicationYear", type = "number" })
+            @Html.ValidationMessageFor(model => model.Item.PublicationYear)
+        </div>
+    </div>
+    <div>
+        <a class="btn btn-success" href="/CatalogManagement/Index">Cancel</a>
+        <input class="btn btn-primary" value="Submit" type="submit" id="submitEditButton" />
+    </div>
+</div>
+
+<head>
+    <script src="~/Scripts/jquery-3.3.1.min.js"></script>
+    <script src="~/Scripts/javascript/catalogitem.js"></script>
+</head>

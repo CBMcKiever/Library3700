@@ -17,16 +17,15 @@
             <div class="row col-md-12">
                 @foreach (var item in Model.catalogItemList)
             {
-                <div class="col-sm-4">
+                <div class="col-md-6">
                     <div class="card">
                         <div class="card-header">Title: @item.Title</div>
                         <div class="card-body">
                             <div>Author: @item.Author</div>
-                            <div>Genre: @item.Genre</div>
-                            <div>Publication Year: @item.PublicationYear</div>
                         </div>
                         <div class="card-footer">
                             <a class="btn btn-primary" href="/CatalogManagement/ItemDetails?id=@item.ItemId">View Details</a>
+                            <a class="btn btn-success" href="/CatalogManagement/EditItem?id=@item.ItemId">Edit Item</a>
                             <a class="btn btn-danger" href="/CatalogManagement/DeleteItem?id=@item.ItemId">Delete Item</a>
                         </div>
                     </div>

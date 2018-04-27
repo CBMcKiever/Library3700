@@ -361,6 +361,7 @@
     <Content Include="Views\Login\Index.cshtml" />
     <Content Include="Views\AccountManagement\Home.cshtml" />
     <Content Include="Views\AccountManagement\AddAccount.cshtml" />
+    <Content Include="Views\CatalogManagement\EditItem.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
