@@ -8,19 +8,20 @@ using System.Web.Mvc;
 using Library3700.Models;
 using Library3700.Models.ViewModels;
 
+
 namespace Library3700.Controllers
 {
     public class CatalogManagementController : Controller
     {
-       
-       
+
+
         /// <summary>
         ///         Index that will return a list of library books with the information to view
         /// </summary>
         public ActionResult Index()
         {
-            using(
-                
+            using (
+
                 LibraryEntities db = new LibraryEntities())
             {
                 try
@@ -36,7 +37,7 @@ namespace Library3700.Controllers
                     return new HttpStatusCodeResult(HttpStatusCode.InternalServerError);
 
                 }
-               
+
             }
         }
 
@@ -90,7 +91,7 @@ namespace Library3700.Controllers
                 return View(item);
             }
         }
-        
+
 
         [HttpGet]
         //finds an item by the item id and returns the item to the details view
@@ -190,8 +191,8 @@ namespace Library3700.Controllers
             }
         }
 
-      
-       
+
+
         /// <summary>
         /// arhcives an item
         /// </summary>
@@ -200,7 +201,7 @@ namespace Library3700.Controllers
         public ActionResult DeleteItem(int id)
         {
             using (LibraryEntities db = new LibraryEntities())
-           {
+            {
                 try
                 {
                     Item item = db.Items.Find(id);
@@ -221,6 +222,102 @@ namespace Library3700.Controllers
             }
         }
 
+        [HttpGet]
+        public ActionResult UpdateItemStatus()
+        {
+            using (LibraryEntities db = new LibraryEntities())
+            {
+                ItemStatusViewModel itemstatusviewmodel = new ItemStatusViewModel();
+                if (itemstatusviewmodel.ItemStatusType.ItemStatusTypeId == 1)
+                {
+                    return View();
+                }
+                if (itemstatusviewmodel.ItemStatusType.ItemStatusTypeId == 2)
+                {
+                    return View();
+                }
+                if (itemstatusviewmodel.ItemStatusType.ItemStatusTypeId == 3)
+                {
+                    return View();
+                }
+                if (itemstatusviewmodel.ItemStatusType.ItemStatusTypeId == 4)
+                {
+                    return View();
+                }
+                return View();
+            }
+        }
+        [HttpPost]
+        public ActionResult UpdateItemStatus(ItemStatusViewModel itemstatusviewmodel)
+        {
+            using (LibraryEntities db = new LibraryEntities())
+            {
+                try
+                {
+                    
+                    Item item = db.Items.Find(itemstatusviewmodel.ItemID);
+                    Account account = db.Accounts.Find(itemstatusviewmodel.AccountID);
+                    ItemStatusType itemStatusType = db.ItemStatusTypes.Find(itemstatusviewmodel.itemStatusTypeID);
+                    
+                    ItemStatusLog itemStatusLog = new ItemStatusLog {
+                    Item = item,
+                    ItemId = item.ItemId,
+                    Account = account,
+                    AccountId = account.AccountId,
+                    ItemStatusTypeId = itemStatusType.ItemStatusTypeId,
+                    LogDateTime = DateTime.Now
+                    };
+                    db.ItemStatusLogs.Add(itemStatusLog);
+                    db.SaveChanges();
+
+                    return Json(new { success = true });
+                }
+                catch
+                {
+                    return Json(new { success = false });
+                }
+            }
+        }
+
+        private static List<AccountItems> GeneratePatronItemsList(int accountID)
+        {
+            using (LibraryEntities db = new LibraryEntities())
+            {
+                try
+                {
+                    List<ItemStatusLog> accountitemList = db.ItemStatusLogs.Where(x => x.AccountId == accountID && (x.ItemStatusTypeId == 2 || x.ItemStatusTypeId == 4)).ToList();
+                    List<AccountItems> accountItems = new List<AccountItems>();
+
+                    if(accountitemList != null || accountitemList.Count != 0)
+                    {
+                        foreach (var i in accountitemList)
+                        {
+                            AccountItems accountitem = new AccountItems
+                            {
+                                item = i.Item,
+                                accountID = i.AccountId,
+                                account = i.Account,
+                                itemTypeID = i.ItemStatusTypeId,
+                                itemStatusText = i.ItemStatusType.ItemStatusName
+                            };
+                            accountItems.Add(accountitem);
+                        }
+                    }
+
+                    return accountItems;
+                }
+                catch
+                {
+                    return null;
+                }
+            }
+        }
+
+        public ActionResult PatronItems(int accountID)
+        {
+            List<AccountItems> patronItems = GeneratePatronItemsList(accountID);
+            return View(patronItems);
+        }
     }
 }
            
