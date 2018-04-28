@@ -13,7 +13,6 @@ namespace Library3700.Controllers
 {
     public class AccountManagementController : Controller
     {
-        private AccountAdapter activeAccount;
 
         public class RegisterRequest
         {
@@ -26,33 +25,23 @@ namespace Library3700.Controllers
             public bool IsLibrarian { get; set; }
         }
 
-        // GET: AccountManagement
+        /// <summary>
+        /// Display the appropriate home page based on who is logged in.
+        /// </summary>
+        /// <returns></returns>
         public ActionResult Home()
         {
             ClaimsIdentity identity = (ClaimsIdentity)User.Identity;
             IEnumerable<Claim> claims = identity.Claims;
 
+            SetActiveAccount();
+
             if (User.IsInRole("librarian"))
             {
-                activeAccount = new Librarian
-                {
-                    LibrarianEmailAddress = claims.Where(x => x.Type == ClaimTypes.Email).Single().Value,
-                    LibrarianFirstName = claims.Where(x => x.Type == ClaimTypes.GivenName).Single().Value,
-                    LibrarianLastName = claims.Where(x => x.Type == ClaimTypes.Surname).Single().Value,
-                    LibrarianId = Int32.Parse(claims.Where(x => x.Type == ClaimTypes.UserData).Single().Value)
-                };
-
                 return View("LibrarianHome");
             }
-            else if (ClaimsPrincipal.Current.IsInRole("patron"))
+            else if (User.IsInRole("patron"))
             {
-                activeAccount = new Patron
-                {
-                    PatronEmailAddress = claims.Where(x => x.Type == ClaimTypes.Email).Single().Value,
-                    PatronFirstName = claims.Where(x => x.Type == ClaimTypes.GivenName).Single().Value,
-                    PatronLastName = claims.Where(x => x.Type == ClaimTypes.Surname).Single().Value,
-                    PatronId = Int32.Parse(claims.Where(x => x.Type == ClaimTypes.UserData).Single().Value)
-                };
                 return View("PatronHome");
             }
             else
@@ -134,6 +123,79 @@ namespace Library3700.Controllers
             catch (Exception e)
             {
                 return Json(new { Success = false, e.Message });
+            }
+        }
+
+        /// <summary>
+        /// Displays page to change user's temporary password.
+        /// </summary>
+        /// <returns></returns>
+        public ActionResult SetPasswordConfirm()
+        {
+            SetActiveAccount();  // establish identity since we have not yet visited the homepage
+            return View();
+        }
+
+        /// <summary>
+        /// Handles form request for setting new password.
+        /// </summary>
+        /// <param name="passwordHash">Hash of new password to set</param>
+        /// <returns></returns>
+        [HttpPost]
+        public ActionResult UpdatePassword(string passwordHash)
+        {
+            using (var db = new LibraryEntities())
+            {
+                using (var transaction = db.Database.BeginTransaction())
+                {
+                    try
+                    {
+                        var activeAccount = (AccountAdapter)System.Web.HttpContext.Current.Session["activeAccount"];
+
+                        Login userLogin = db.Logins.Where(x => x.AccountId == activeAccount.AccountNumber).SingleOrDefault();
+                        userLogin.PasswordHash = passwordHash;
+                        userLogin.IsPasswordTemporary = false;
+                        db.SaveChanges();
+                        transaction.Commit();
+                    }
+                    catch
+                    {
+                        transaction.Rollback();
+                        return new HttpStatusCodeResult(System.Net.HttpStatusCode.InternalServerError);
+                    }
+                }           
+            }
+
+            return RedirectToAction("Home");
+        }
+
+        /// <summary>
+        /// Sets active account for the controller
+        /// </summary>
+        private void SetActiveAccount()
+        {
+            ClaimsIdentity identity = (ClaimsIdentity)User.Identity;
+            IEnumerable<Claim> claims = identity.Claims;
+
+            if (User.IsInRole("librarian"))
+            {
+                System.Web.HttpContext.Current.Session["activeAccount"] = new Librarian
+                {
+                    LibrarianEmailAddress = claims.Where(x => x.Type == ClaimTypes.Email).Single().Value,
+                    LibrarianFirstName = claims.Where(x => x.Type == ClaimTypes.GivenName).Single().Value,
+                    LibrarianLastName = claims.Where(x => x.Type == ClaimTypes.Surname).Single().Value,
+                    LibrarianId = Int32.Parse(claims.Where(x => x.Type == ClaimTypes.UserData).Single().Value)
+                };
+            }
+            else if (User.IsInRole("patron"))
+            {
+                System.Web.HttpContext.Current.Session["activeAccount"] = new Patron
+                {
+                    PatronEmailAddress = claims.Where(x => x.Type == ClaimTypes.Email).Single().Value,
+                    PatronFirstName = claims.Where(x => x.Type == ClaimTypes.GivenName).Single().Value,
+                    PatronLastName = claims.Where(x => x.Type == ClaimTypes.Surname).Single().Value,
+                    PatronId = Int32.Parse(claims.Where(x => x.Type == ClaimTypes.UserData).Single().Value)
+                };
             }
         }
 
