@@ -205,12 +205,12 @@ namespace Library3700.Controllers
                 try
                 {
                     Item item = db.Items.Find(id);
-                    //List<ItemStatusLog> itemStatusList = db.ItemStatusLogs.Where(x => x.ItemId == id).ToList();
-                    //foreach (var itemstatus in itemStatusList)
-                    //{
-                    //    db.ItemStatusLogs.Remove(itemstatus);
-                    //    db.SaveChanges();
-                    //}
+                    List<ItemStatusLog> itemStatusList = db.ItemStatusLogs.Where(x => x.ItemId == id).ToList();
+                    foreach (var itemstatus in itemStatusList)
+                    {
+                        db.ItemStatusLogs.Remove(itemstatus);
+                        db.SaveChanges();
+                    }
                     db.Items.Remove(item);
                     db.SaveChanges();
                 }
