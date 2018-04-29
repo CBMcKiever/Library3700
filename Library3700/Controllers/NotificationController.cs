@@ -80,6 +80,20 @@ namespace Library3700.Controllers
 
         }
 
+        public ActionResult ResetPasswordUserNotFound()
+        {
+            return Json(new { Success = false, Message = "An account with that username was not found!" });
+        }
+
+        public ActionResult ResetPasswordSuccess(string pass)
+        {
+            return Json(new { Success = true, Message = "User assigned new temporary password: " + pass });
+        }
+
+        public ActionResult UnknownError()
+        {
+            return Json(new { Success = false, Message = "An unexpected error has occurred!" });
+        }
 
         //public class Notification
         //{

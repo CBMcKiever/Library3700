@@ -180,7 +180,7 @@ namespace Library3700.Controllers
         /// <param name="user">User to give new temporary password</param>
         /// <returns>Json result indicating success and new temporary password.</returns>
         [HttpPost]
-        public JsonResult NewTemporaryPassword(string user)
+        public ActionResult NewTemporaryPassword(string user)
         {
             using (var db = new LibraryEntities())
             {
@@ -191,7 +191,7 @@ namespace Library3700.Controllers
                         Login targetLogin = db.Logins.Where(x => x.Username == user).SingleOrDefault();
                         if (targetLogin == null)
                         {
-                            return Json(new { Success = false, Message = "An account with that username was not found!" });
+                            return notification.ResetPasswordUserNotFound();
                         }
 
                         var newTempPassword = GenerateTemporaryPassword();
@@ -202,12 +202,12 @@ namespace Library3700.Controllers
                         db.SaveChanges();
                         transaction.Commit();
 
-                        return Json(new { Success = true, Message = "User assigned new temporary password: " + newTempPassword });
+                        return notification.ResetPasswordSuccess(newTempPassword);
                     }
                     catch
                     {
                         transaction.Rollback();
-                        return Json(new { Success = false, Message = "An unexpected error has occurred!" });
+                        return notification.UnknownError();
                     }
                 }
             }
