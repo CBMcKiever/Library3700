@@ -17,7 +17,7 @@ namespace Library3700.Controllers
 
         public ActionResult GeneratePatronReport()
         {
-            return View();
+            return View("PatronReport");
         }
 
         public ActionResult GenerateLibrarianReport()

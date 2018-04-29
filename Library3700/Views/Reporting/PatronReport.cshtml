@@ -1,0 +1,17 @@
+﻿
+@{
+    ViewBag.Title = "PatronReport";
+}
+
+<br />
+@Html.ActionLink("< Back", "Home", "AccountManagement")
+<br />
+<br />
+<h2>Patron Report</h2>
+
+@{
+    var activeAccount = System.Web.HttpContext.Current.Session["activeAccount"];
+}
+
+
+@Html.Partial("~/Views/CatalogManagement/PatronItems.cshtml")
