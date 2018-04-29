@@ -384,6 +384,7 @@
     <Content Include="Views\CatalogManagement\ReserveItem.cshtml" />
     <Content Include="Views\CatalogManagement\MissingItem.cshtml" />
     <Content Include="Views\CatalogManagement\MissingItemList.cshtml" />
+    <Content Include="Views\AccountManagement\ResetPassword.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

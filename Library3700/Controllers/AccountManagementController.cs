@@ -166,6 +166,53 @@ namespace Library3700.Controllers
         }
 
         /// <summary>
+        /// Displays page for a librarian to assign a user a new temporary password.
+        /// </summary>
+        /// <returns>Reset password view</returns>
+        public ActionResult ResetPassword()
+        {
+            return View();
+        }
+
+        /// <summary>
+        /// Handle request to assign user a new temporary password
+        /// </summary>
+        /// <param name="user">User to give new temporary password</param>
+        /// <returns>Json result indicating success and new temporary password.</returns>
+        public JsonResult NewTemporaryPassword(string user)
+        {
+            using (var db = new LibraryEntities())
+            {
+                using (var transaction = db.Database.BeginTransaction())
+                {
+                    try
+                    {
+                        Login targetLogin = db.Logins.Where(x => x.Username == user).SingleOrDefault();
+                        if (targetLogin == null)
+                        {
+                            return Json(new { Success = false, Message = "An account with that username was not found!" });
+                        }
+
+                        var newTempPassword = GenerateTemporaryPassword();
+
+                        targetLogin.PasswordHash = HashString(newTempPassword);
+                        targetLogin.IsPasswordTemporary = true;
+
+                        db.SaveChanges();
+                        transaction.Commit();
+
+                        return Json(new { Success = true, Message = "User assigned new temporary password: " + newTempPassword });
+                    }
+                    catch
+                    {
+                        transaction.Rollback();
+                        return Json(new { Success = false, Message = "An unexpected error has occurred!" });
+                    }
+                }
+            }
+        }
+
+        /// <summary>
         /// Sets active account for the controller
         /// </summary>
         private void SetActiveAccount()

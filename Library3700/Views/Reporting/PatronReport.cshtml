@@ -1,5 +1,4 @@
-﻿
-@{
+﻿@{
     ViewBag.Title = "PatronReport";
 }
 
@@ -8,10 +7,11 @@
 <br />
 <br />
 <h2>Patron Report</h2>
-
+<br />
 @{
-    var activeAccount = System.Web.HttpContext.Current.Session["activeAccount"];
+    var activeAccount = (Library3700.Models.Objects.Account.AccountAdapter)System.Web.HttpContext.Current.Session["activeAccount"];
 }
 
+<p>Welcome, @activeAccount.FirstName</p>
 
 @Html.Partial("~/Views/CatalogManagement/PatronItems.cshtml")
