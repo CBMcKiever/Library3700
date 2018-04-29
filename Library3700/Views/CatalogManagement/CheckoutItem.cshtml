@@ -1,0 +1,39 @@
+﻿@model Library3700.Models.ViewModels.ItemStatusViewModel
+@{
+    ViewBag.Title = "CheckoutItem";
+}
+<br />
+<h2>Checkout Item</h2>
+@if (Model.ItemList == null)
+{
+    <h2>There are no items to checkout in the catalog.</h2>
+}
+else
+{
+    <div class="container">
+        <div class="form-group">
+            @Html.LabelFor(model => model.ItemID, "Select the item to checkout: ", new { @class = "control-label col-md-4" })
+            <div class="col-md-12">
+                @Html.DropDownListFor(model => model.ItemID, new SelectList(Model.ItemList, "ItemID", "Title"), new { @id = "ItemID" })
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(model => model.AccountID, "Select the Patron Account for checkout: ", new { @class = "control-label col-md-4" })
+            <div class="col-md-12">
+                @Html.DropDownListFor(model => model.AccountID, new SelectList(Model.AccountList, "AccountID", "FirstName"), new { @id = "AccountID" })
+            </div>
+        </div>
+        <div>
+            <input type="hidden" id="statusTypeID" value="4" />
+            <a class="btn btn-success" href="/CatalogManagement/Index">Cancel</a>
+            <input class="btn btn-primary" value="Submit" type="submit" id="submitCheckoutButton" />
+        </div>
+    </div>
+
+}
+
+    <head>
+        <link href="~/Content/CSS/CatalogCSS.css" rel="stylesheet" />
+        <script src="~/Scripts/jquery-3.3.1.min.js"></script>
+        <script src="~/Scripts/javascript/catalogitem.js"></script>
+    </head>

@@ -38,6 +38,27 @@ namespace Library3700.Controllers
             return Json(new { success = false, msg = "Unable to delete item. Please try again." });
         }
 
+        public ActionResult UpdateItemSuccess()
+        {
+            return Json(new { success = true, msg = "Item status updated successfully." });
+        }
+
+        public ActionResult UpdateItemFailure()
+        {
+            return Json(new { success = false, msg = "Unable to update item status. Please try again." });
+        }
+
+        public ActionResult CheckoutSuccess(DateTime dateDue)
+        {
+
+            return Json(new { success = true, msg = "Item Checked Out and is due back: " + dateDue });
+        }
+
+        public ActionResult CheckoutFailure()
+        {
+            return Json(new { success = false, msg = "Unable to checkout item. Please try again." });
+        }
+
         //public class Notification
         //{
         //    private static int _count;

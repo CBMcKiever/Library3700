@@ -78,10 +78,23 @@ namespace Library3700.Controllers
                         item.ItemTypeId = catalogItem.ItemTypeId;
                         item.ItemType = db.ItemTypes.Where(x => x.ItemTypeId == catalogItem.ItemTypeId).FirstOrDefault();
                     }
+
                     if (ModelState.IsValid)
                     {
                         db.Items.Add(item);
                         db.SaveChanges();
+
+                        ItemStatusLog updateStatus = new ItemStatusLog
+                        {
+                            ItemId = item.ItemId,
+                            AccountId = db.Accounts.Where(x => x.IsLibrarian == true && x.AccountId == 1).Select(f => f.AccountId).FirstOrDefault(),
+                            ItemStatusTypeId = 1,
+                            ItemStatusType = db.ItemStatusTypes.Where(x => x.ItemStatusTypeId == 1).FirstOrDefault(),
+                            LogDateTime = DateTime.Now
+                        };
+                        db.ItemStatusLogs.Add(updateStatus);
+                        db.SaveChanges();
+
                         return notification.SuccessItemCreation();
                     }
                 }
@@ -224,6 +237,30 @@ namespace Library3700.Controllers
         }
 
         [HttpGet]
+        public ActionResult CheckoutItem()
+        {
+            using (LibraryEntities db = new LibraryEntities())
+            {
+                try
+                {
+                    //TODO: get the last item status and not all of the item status
+                    ItemStatusViewModel AccountItemsCheckout = new ItemStatusViewModel();
+                    List<Item> ItemList = db.ItemStatusLogs.Where(x => x.ItemStatusTypeId == 1).Select(f => f.Item).ToList();
+                    List<Account> AccountList = db.Accounts.Where(x => x.IsLibrarian == false).ToList();
+                    AccountItemsCheckout.ItemList = ItemList;
+                    AccountItemsCheckout.AccountList = AccountList;
+                    AccountItemsCheckout.ItemID = -1;
+                    AccountItemsCheckout.AccountID = -1;
+                    return View(AccountItemsCheckout);
+                }
+                catch
+                {
+                    return new HttpStatusCodeResult(HttpStatusCode.InternalServerError);
+                }
+            }
+        }
+
+        [HttpGet]
         public ActionResult UpdateItemStatus()
         {
             using (LibraryEntities db = new LibraryEntities())
@@ -259,23 +296,37 @@ namespace Library3700.Controllers
                     Item item = db.Items.Find(itemstatusviewmodel.ItemID);
                     Account account = db.Accounts.Find(itemstatusviewmodel.AccountID);
                     ItemStatusType itemStatusType = db.ItemStatusTypes.Find(itemstatusviewmodel.itemStatusTypeID);
-                    
-                    ItemStatusLog itemStatusLog = new ItemStatusLog {
-                    Item = item,
-                    ItemId = item.ItemId,
-                    Account = account,
-                    AccountId = account.AccountId,
-                    ItemStatusTypeId = itemStatusType.ItemStatusTypeId,
-                    LogDateTime = DateTime.Now
-                    };
-                    db.ItemStatusLogs.Add(itemStatusLog);
-                    db.SaveChanges();
 
-                    return Json(new { success = true });
+                    ItemStatusLog itemStatusLog = new ItemStatusLog
+                    {
+                        Item = item,
+                        ItemId = item.ItemId,
+                        Account = account,
+                        AccountId = account.AccountId,
+                        ItemStatusTypeId = itemStatusType.ItemStatusTypeId,
+                        LogDateTime = DateTime.Now
+                    };
+                    if (itemStatusLog.ItemStatusTypeId == 4)
+                    {
+                        DateTime Now = DateTime.Now;
+                        DateTime Duedate = Now.AddDays(3);
+                        itemStatusLog.ReturnItemDueDate = Duedate;
+                        db.ItemStatusLogs.Add(itemStatusLog);
+                        db.SaveChanges();
+
+                        return notification.CheckoutSuccess(Duedate);
+                    }
+                    else
+                    {
+                        db.ItemStatusLogs.Add(itemStatusLog);
+                        db.SaveChanges();
+
+                        return notification.UpdateItemSuccess();
+                    }
                 }
                 catch
                 {
-                    return Json(new { success = false });
+                    return notification.UpdateItemFailure();
                 }
             }
         }

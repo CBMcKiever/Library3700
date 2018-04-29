@@ -14,5 +14,7 @@ namespace Library3700.Models.ViewModels
         public int ItemID { get; set; }
         public int AccountID { get; set; }
         public int itemStatusTypeID { get; set; }
+        public IEnumerable<Item> ItemList { get; set; }
+        public IEnumerable<Account> AccountList { get; set; }
     }
 }

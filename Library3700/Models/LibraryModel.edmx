@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="LibraryModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012.Azure" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="LibraryModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012.Azure" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="Account">
           <Key>
             <PropertyRef Name="AccountId" />
@@ -50,6 +50,7 @@
           <Property Name="ItemStatusTypeId" Type="tinyint" Nullable="false" />
           <Property Name="LogDateTime" Type="datetime" Nullable="false" />
           <Property Name="AccountId" Type="int" />
+          <Property Name="ReturnItemDueDate" Type="datetime" />
         </EntityType>
         <EntityType Name="ItemStatusType">
           <Key>
@@ -247,8 +248,7 @@
             <End Role="Report" EntitySet="Report" />
           </AssociationSet>
         </EntityContainer>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="LibraryModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -309,6 +309,7 @@
           <NavigationProperty Name="Account" Relationship="Self.FK_ItemStatusLog_Account" FromRole="ItemStatusLog" ToRole="Account" />
           <NavigationProperty Name="Item" Relationship="Self.FK_ItemStatusLog_Item" FromRole="ItemStatusLog" ToRole="Item" />
           <NavigationProperty Name="ItemStatusType" Relationship="Self.FK_ItemStatusLog_ItemStatusType" FromRole="ItemStatusLog" ToRole="ItemStatusType" />
+          <Property Name="ReturnItemDueDate" Type="DateTime" Precision="3" />
         </EntityType>
         <EntityType Name="ItemStatusType">
           <Key>
@@ -561,6 +562,7 @@
           <EntitySetMapping Name="ItemStatusLogs">
             <EntityTypeMapping TypeName="LibraryModel.ItemStatusLog">
               <MappingFragment StoreEntitySet="ItemStatusLog">
+                <ScalarProperty Name="ReturnItemDueDate" ColumnName="ReturnItemDueDate" />
                 <ScalarProperty Name="ItemStatusLogId" ColumnName="ItemStatusLogId" />
                 <ScalarProperty Name="ItemId" ColumnName="ItemId" />
                 <ScalarProperty Name="ItemStatusTypeId" ColumnName="ItemStatusTypeId" />

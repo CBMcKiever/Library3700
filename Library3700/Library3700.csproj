@@ -380,6 +380,7 @@
     <Content Include="Views\Reporting\PatronReport.cshtml" />
     <Content Include="Views\CatalogManagement\ReportMissingItem.cshtml" />
     <Content Include="Views\CatalogManagement\_DeleteItem.cshtml" />
+    <Content Include="Views\CatalogManagement\CheckoutItem.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

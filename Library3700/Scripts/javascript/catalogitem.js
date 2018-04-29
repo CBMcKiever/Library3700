@@ -92,7 +92,38 @@
         $('#delete-item-btn-@item.ItemId').val('');
     });
 
+    function updateItemStatus() {
+        var statusUpdate = {
+            ItemID: $("#ItemID").val(),
+            AccountID: $("#AccountID").val(),
+            itemStatusTypeID: $("#statusTypeID").val()
+        }
+        return statusUpdate;
+    };
 
+    var checkOutItem = $('#submitCheckoutButton');
+    checkOutItem.on('click', function () {
+        var itemstatusviewmodel = updateItemStatus();
+        $.ajax({
+            type: "POST",
+            url: "/CatalogManagement/UpdateItemStatus",
+            datatype: 'json',
+            contentType: "application/json; charset=utf-8",
+            data: JSON.stringify({ itemstatusviewmodel: itemstatusviewmodel }),
+            success: function (n) {
+                if (n.success) {
+                    toastr.success(n.msg);
+                    var delay = 5000;
+                    setTimeout(function () {
+                        window.location.href = "/CatalogManagement/Index"
+                    }, delay);
+                }
+                else {
+                    toastr.error(n.msg);
+                }
+            }
+        });
+    });
    
 
 
