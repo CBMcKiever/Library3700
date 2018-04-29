@@ -8,7 +8,7 @@ using System.Web.Mvc;
 using Library3700.Models;
 using Library3700.Models.ViewModels;
 using Library3700.Controllers;
-
+using Library3700.Models.Objects.Account;
 
 namespace Library3700.Controllers
 {
@@ -272,30 +272,59 @@ namespace Library3700.Controllers
         }
 
         [HttpGet]
-        public ActionResult UpdateItemStatus()
+        public ActionResult UpdateItemStatus(int id)
         {
             using (LibraryEntities db = new LibraryEntities())
             {
-                ItemStatusViewModel itemstatusviewmodel = new ItemStatusViewModel();
-                if (itemstatusviewmodel.ItemStatusType.ItemStatusTypeId == 1)
+                if (id == 2)
                 {
-                    return View();
+                    ItemStatusViewModel AccountItemsCheckout = new ItemStatusViewModel();
+                    List<Item> ItemList = db.ItemStatusLogs.Select(f => f.Item).ToList();
+                    List<Item> NewItemList = new List<Item>();
+
+                    foreach (var item in ItemList)
+                    {
+                        Item listItem = ItemList.Where(x => x.ItemId == item.ItemId).Last();
+                        byte lastStatus = listItem.ItemStatusLogs.Select(f => f.ItemStatusTypeId).Last();
+                        if (lastStatus == 1)
+                        {
+                            NewItemList.Add(listItem);
+                        }
+                    }
+                    var activeAccount = (AccountAdapter)System.Web.HttpContext.Current.Session["activeAccount"];
+                    AccountItemsCheckout.ItemList = NewItemList;
+                    AccountItemsCheckout.ItemID = -1;
+                    AccountItemsCheckout.AccountID = activeAccount.AccountNumber;
+                    return View("ReserveItem", AccountItemsCheckout);
                 }
-                if (itemstatusviewmodel.ItemStatusType.ItemStatusTypeId == 2)
+                if (id == 3)
                 {
-                    return View();
-                }
-                if (itemstatusviewmodel.ItemStatusType.ItemStatusTypeId == 3)
-                {
-                    return View();
-                }
-                if (itemstatusviewmodel.ItemStatusType.ItemStatusTypeId == 4)
-                {
-                    return View();
+                   
+                    ItemStatusViewModel AccountItemsCheckout = new ItemStatusViewModel();
+                    var activeAccount = (AccountAdapter)System.Web.HttpContext.Current.Session["activeAccount"];
+                    List<Item> accountItems = db.ItemStatusLogs.Where(x => x.AccountId == activeAccount.AccountNumber).Select(f => f.Item).ToList();
+                    List<Item> NewItemList = new List<Item>();
+
+                    foreach (var item in accountItems)
+                    {
+                        Item listItem = accountItems.Where(x => x.ItemId == item.ItemId).Last();
+                        byte lastStatus = listItem.ItemStatusLogs.Select(f => f.ItemStatusTypeId).Last();
+                        if (lastStatus == 4)
+                        {
+                            NewItemList.Add(listItem);
+                        }
+                    }
+                    AccountItemsCheckout.ItemList = accountItems;
+                    AccountItemsCheckout.ItemID = -1;
+                    AccountItemsCheckout.AccountID = activeAccount.AccountNumber;
+
+                    return View("MissingItem", AccountItemsCheckout);
                 }
                 return View();
             }
         }
+
+
         [HttpPost]
         public ActionResult UpdateItemStatus(ItemStatusViewModel itemstatusviewmodel)
         {
@@ -326,6 +355,16 @@ namespace Library3700.Controllers
                         db.SaveChanges();
 
                         return notification.CheckoutSuccess(Duedate);
+                    }
+                    if(itemStatusLog.ItemStatusTypeId == 2)
+                    {
+                        DateTime Now = DateTime.Now;
+                        DateTime HoldDate = Now.AddDays(1);
+                        itemStatusLog.ReturnItemDueDate = HoldDate;
+                        db.ItemStatusLogs.Add(itemStatusLog);
+                        db.SaveChanges();
+
+                        return notification.ReserveItemSuccess(HoldDate);
                     }
                     else
                     {
@@ -376,11 +415,46 @@ namespace Library3700.Controllers
             }
         }
 
-        public ActionResult PatronItems(int accountID)
+        public ActionResult PatronItems()
         {
-            List<AccountItems> patronItems = GeneratePatronItemsList(accountID);
+            var activeAccount = (AccountAdapter)System.Web.HttpContext.Current.Session["activeAccount"];
+            List<AccountItems> patronItems = GeneratePatronItemsList(activeAccount.AccountNumber);
             return View(patronItems);
         }
+
+        [Authorize(Roles ="librarian")]
+        public ActionResult MissingItemList()
+        {
+            using (LibraryEntities db = new LibraryEntities())
+            {
+                try
+                {
+                    ItemStatusViewModel AccountItemsCheckout = new ItemStatusViewModel();
+                    List<Item> ItemList = db.ItemStatusLogs.Select(f => f.Item).ToList();
+                    List<Item> NewItemList = new List<Item>();
+
+                    foreach (var item in ItemList)
+                    {
+                        Item listItem = ItemList.Where(x => x.ItemId == item.ItemId).Last();
+                        byte lastStatus = listItem.ItemStatusLogs.Select(f => f.ItemStatusTypeId).Last();
+                        if (lastStatus == 3)
+                        {
+                            NewItemList.Add(listItem);
+                        }
+                    }
+                    AccountItemsCheckout.MissingItemList = NewItemList;
+                    AccountItemsCheckout.ItemStatusText = db.ItemStatusTypes.Where(x => x.ItemStatusTypeId == 3).Select(x => x.ItemStatusName).FirstOrDefault();
+
+                    return View("MissingItemList", AccountItemsCheckout);
+                }
+                catch
+                {
+                    return null;
+                }
+            }
+        }
+
+
     }
 }
            

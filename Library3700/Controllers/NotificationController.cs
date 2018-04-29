@@ -12,7 +12,7 @@ namespace Library3700.Controllers
         {
             return Json(new { success = true, msg = "Item created successfully." });
         }
-        
+
         public ActionResult FailureItemCreation()
         {
             return Json(new { success = false, msg = "Unable to create item. Please try again." });
@@ -32,7 +32,7 @@ namespace Library3700.Controllers
         {
             return Json(new { success = true, msg = "Item deleted successfully." });
         }
-        
+
         public ActionResult DeleteItemFailure()
         {
             return Json(new { success = false, msg = "Unable to delete item. Please try again." });
@@ -58,6 +58,28 @@ namespace Library3700.Controllers
         {
             return Json(new { success = false, msg = "Unable to checkout item. Please try again." });
         }
+
+        public ActionResult AddAccountSuccess(string temporaryPassword)
+        {
+            return Json(new { success = true, msg = "Account has been created. Temporary Password for login is: " + temporaryPassword });
+        }
+
+        public ActionResult AddAccountFailure()
+        {
+            return Json(new { success = false, msg = "Unable to create account. Please try again." });
+        }
+
+        public ActionResult ReserveItemSuccess(DateTime holddate)
+        {
+            return Json(new { success = true, msg = "Item has been successfully reserved. Please pickup at the library. Item will be held for pickup until: " + holddate });
+        }
+
+        public ActionResult MissingItemSuccess()
+        {
+            return Json(new { success = true, msg = "Item has been reported missing successfully." });
+
+        }
+
 
         //public class Notification
         //{

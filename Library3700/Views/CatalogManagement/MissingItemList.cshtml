@@ -1,0 +1,37 @@
+﻿@model Library3700.Models.ViewModels.ItemStatusViewModel
+@{
+    ViewBag.Title = "MissingItemList";
+}
+
+<h2>Missing Item List</h2>
+<br />
+<div>
+    @if (Model == null)
+    {
+        <h3>You have no items checked out.</h3>
+    }
+    else
+    {
+        <table class="table" id="itemTable">
+            <thead>
+                <tr>
+                    <th scope="col">Title</th>
+                    <th scope="col">Author</th>
+                    <th scope="col">Genre</th>
+                    <th scope="col">Published</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model.MissingItemList)
+                {
+                    <tr data-item-id=@item.ItemId>
+                        <td>@item.Title</td>
+                        <td>@item.Author</td>
+                        <td>@item.Genre</td>
+                        <td>@item.PublicationYear</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+</div>

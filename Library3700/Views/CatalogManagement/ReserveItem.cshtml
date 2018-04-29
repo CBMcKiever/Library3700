@@ -1,0 +1,111 @@
+﻿@model Library3700.Models.ViewModels.ItemStatusViewModel
+@{
+    ViewBag.Title = "ReserveItem";
+}
+
+
+<br />
+<h2>Reserve an Item</h2>
+@if (Model.ItemList == null)
+{
+    <h2>There are no items available to be reserved.</h2>
+}
+else
+{
+    <div>
+        <div class="row col-md-12">
+            <input type="text" id="searchCatalog" onkeyup="catalogSearchFunction()" placeholder="&#xf002 Search By Title..." title="Type in an item name" class="fas fa-search" />
+        </div>
+   
+     
+            <table class="table" id="itemTable">
+                <thead>
+                    <tr>
+                        <th scope="col">Title</th>
+                        <th scope="col">Author</th>
+                        <th scope="col">Genre</th>
+                        <th scope="col">Published</th>
+                        <th scope="col">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model.ItemList)
+                    {
+                        <tr data-item-id=@item.ItemId>
+                            <td>@item.Title</td>
+                            <td>@item.Author</td>
+                            <td>@item.Genre</td>
+                            <td>@item.PublicationYear</td>
+                            <td>
+                                <input type="hidden" value="2" id="statusTypeID"/>
+                                <input type="hidden" value="@Model.AccountID" id="AccountID"/>
+                                <input type="hidden" value="@item.ItemId" id="ItemID"/>
+                                <a class="btn btn-primary" id="reserveItemButton" style="color: white">ReserveItem</a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+    </div>
+
+
+
+
+    <script>
+        function catalogSearchFunction() {
+            var input, filter, table, tr, td, i;
+            input = document.getElementById("searchCatalog");
+            filter = input.value.toUpperCase();
+            table = document.getElementById("itemTable");
+            tr = table.getElementsByTagName("tr");
+            for (i = 0; i < tr.length; i++) {
+                td = tr[i].getElementsByTagName("td")[0];
+                if (td) {
+                    if (td.innerHTML.toUpperCase().indexOf(filter) > -1) {
+                        tr[i].style.display = "";
+                    } else {
+                        tr[i].style.display = "none";
+                    }
+                }
+            }
+        }
+    </script>
+    <head>
+        <link href="~/Content/CSS/CatalogCSS.css" rel="stylesheet" />
+        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.10/css/all.css" integrity="sha384-+d0P83n9kaQMCwj8F4RJB66tzIwOKmrdb46+porD/OvrJ+37WqIM7UoBtwHO6Nlg" crossorigin="anonymous">
+        <link href="~/Content/bootstrap.css" rel="stylesheet" />
+        <script src="~/Scripts/bootstrap.bundle.js"></script>
+        <script src="~/Scripts/jquery-3.3.1.min.js"></script>
+        <script src="~/Scripts/bootstrap.min.js"></script>
+        <script src="~/Scripts/javascript/catalogitem.js"></script>
+    </head>
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<head>
+    <link href="~/Content/CSS/CatalogCSS.css" rel="stylesheet" />
+    <script src="~/Scripts/jquery-3.3.1.min.js"></script>
+    <script src="~/Scripts/javascript/catalogitem.js"></script>
+</head>
+

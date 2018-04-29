@@ -381,6 +381,9 @@
     <Content Include="Views\CatalogManagement\ReportMissingItem.cshtml" />
     <Content Include="Views\CatalogManagement\_DeleteItem.cshtml" />
     <Content Include="Views\CatalogManagement\CheckoutItem.cshtml" />
+    <Content Include="Views\CatalogManagement\ReserveItem.cshtml" />
+    <Content Include="Views\CatalogManagement\MissingItem.cshtml" />
+    <Content Include="Views\CatalogManagement\MissingItemList.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

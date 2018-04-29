@@ -21,17 +21,17 @@
                     <th scope="col">Author</th>
                     <th scope="col">Genre</th>
                     <th scope="col">Published</th>
-                    <th scope="col">Actions</th>
+                    <th scope="col">Status</th>
                 </tr>
             </thead>
             <tbody>
                 @foreach (var item in Model)
                 {
                     <tr data-item-id=@item.itemID>
-                        <td>@item.Title</td>
-                        <td>@item.Author</td>
-                        <td>@item.Genre</td>
-                        <td>@item.itemID</td>
+                        <td>@item.item.Title</td>
+                        <td>@item.item.Author</td>
+                        <td>@item.item.Genre</td>
+                        <td>@item.item.PublicationYear</td>
                         <td>@item.itemStatusText</td>
                     </tr>
                 }
