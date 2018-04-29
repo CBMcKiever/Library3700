@@ -3,9 +3,12 @@
 @{
     ViewBag.Title = "Edit Item";
 }
+<br />
+@Html.ActionLink("< Back", "Home", "AccountManagement")
+<br />
 <!--TO DO: ADD ITEM TYPE-->
 <h2>Edit Item</h2>
-<input type="hidden" id="itemID" value="@Model.Item.ItemId"/>
+<input type="hidden" id="itemID" value="@Model.Item.ItemId" />
 <div class="container">
     <div class="form-group">
         @Html.LabelFor(model => model.Item.Title, new { @class = "control-label col-md-2" })

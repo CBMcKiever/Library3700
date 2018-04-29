@@ -201,7 +201,37 @@
         });
     });
 
-   
+    var checkinItem = $('#checkinitembutton');
+    checkinItem.on('click', function () {
+        toastr.options = {
+            "positionClass": "toast-bottom-full-width",
+            "closeButton": false,
+            "showDuration": "300",
+            "hideDuration": "1000",
+            "timeOut": "5000",
+            "extendedTimeOut": "1000",
+        };
+        var itemstatusviewmodel = updateItemStatus();
+        $.ajax({
+            type: "POST",
+            url: "/CatalogManagement/UpdateItemStatus",
+            datatype: 'json',
+            contentType: "application/json; charset=utf-8",
+            data: JSON.stringify({ itemstatusviewmodel: itemstatusviewmodel }),
+            success: function (n) {
+                if (n.success) {
+                    toastr.success(n.msg);
+                    var delay = 5000;
+                    setTimeout(function () {
+                        window.location.href = "/AccountManagement/Home"
+                    }, delay);
+                }
+                else {
+                    toastr.error(n.msg);
+                }
+            }
+        });
+    });
 
 
 });

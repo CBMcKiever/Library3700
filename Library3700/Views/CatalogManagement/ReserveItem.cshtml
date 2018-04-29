@@ -3,7 +3,9 @@
     ViewBag.Title = "ReserveItem";
 }
 
-
+<br />
+@Html.ActionLink("< Back", "Home", "AccountManagement")
+<br />
 <br />
 <h2>Reserve an Item</h2>
 @if (Model.ItemList == null)
@@ -16,36 +18,36 @@ else
         <div class="row col-md-12">
             <input type="text" id="searchCatalog" onkeyup="catalogSearchFunction()" placeholder="&#xf002 Search By Title..." title="Type in an item name" class="fas fa-search" />
         </div>
-   
-     
-            <table class="table" id="itemTable">
-                <thead>
-                    <tr>
-                        <th scope="col">Title</th>
-                        <th scope="col">Author</th>
-                        <th scope="col">Genre</th>
-                        <th scope="col">Published</th>
-                        <th scope="col">Actions</th>
+
+
+        <table class="table" id="itemTable">
+            <thead>
+                <tr>
+                    <th scope="col">Title</th>
+                    <th scope="col">Author</th>
+                    <th scope="col">Genre</th>
+                    <th scope="col">Published</th>
+                    <th scope="col">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model.ItemList)
+                {
+                    <tr data-item-id=@item.ItemId>
+                        <td>@item.Title</td>
+                        <td>@item.Author</td>
+                        <td>@item.Genre</td>
+                        <td>@item.PublicationYear</td>
+                        <td>
+                            <input type="hidden" value="2" id="statusTypeID" />
+                            <input type="hidden" value="@Model.AccountID" id="AccountID" />
+                            <input type="hidden" value="@item.ItemId" id="ItemID" />
+                            <a class="btn btn-primary" id="reserveItemButton" style="color: white">ReserveItem</a>
+                        </td>
                     </tr>
-                </thead>
-                <tbody>
-                    @foreach (var item in Model.ItemList)
-                    {
-                        <tr data-item-id=@item.ItemId>
-                            <td>@item.Title</td>
-                            <td>@item.Author</td>
-                            <td>@item.Genre</td>
-                            <td>@item.PublicationYear</td>
-                            <td>
-                                <input type="hidden" value="2" id="statusTypeID"/>
-                                <input type="hidden" value="@Model.AccountID" id="AccountID"/>
-                                <input type="hidden" value="@item.ItemId" id="ItemID"/>
-                                <a class="btn btn-primary" id="reserveItemButton" style="color: white">ReserveItem</a>
-                            </td>
-                        </tr>
-                    }
-                </tbody>
-            </table>
+                }
+            </tbody>
+        </table>
     </div>
 
 

@@ -2,7 +2,9 @@
 @{
     ViewBag.Title = "Create Item";
 }
-
+<br />
+@Html.ActionLink("< Back", "Home", "AccountManagement")
+<br />
 <h2>Create New Item</h2>
 <div class="container">
     <div class="form-group">
@@ -20,10 +22,10 @@
         </div>
     </div>
     <div class="form-group">
-        @Html.LabelFor(model => model.ItemType, "Select Item Type:",  new { @class = "control-label col-md-2" })
+        @Html.LabelFor(model => model.ItemType, "Select Item Type:", new { @class = "control-label col-md-2" })
         <div class="col-md-10">
-            <input type="radio" name="ItemType" value="Book"/>Book
-            <input type="radio" name="ItemType" value="AudioBook"/>AudioBook
+            <input type="radio" name="ItemType" value="Book" />Book
+            <input type="radio" name="ItemType" value="AudioBook" />AudioBook
         </div>
     </div>
     <div class="form-group">
