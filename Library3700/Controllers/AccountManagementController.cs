@@ -13,7 +13,7 @@ namespace Library3700.Controllers
 {
     public class AccountManagementController : Controller
     {
-
+        NotificationController notification = new NotificationController();
         public class RegisterRequest
         {
             public string FirstName { get; set; }
@@ -64,7 +64,7 @@ namespace Library3700.Controllers
         /// </summary>
         /// <param name="request">Form data</param>
         /// <returns></returns>
-        public JsonResult RegisterNewAccount(RegisterRequest request)
+        public ActionResult RegisterNewAccount(RegisterRequest request)
         {
             try
             {
@@ -113,16 +113,12 @@ namespace Library3700.Controllers
                         }
                     }
 
-                    return Json(new
-                    {
-                        Success = true,
-                        Message = "Created user with temporary password: " + temporaryPassword
-                    });
+                    return notification.AddAccountSuccess(temporaryPassword);
                 }
             }
-            catch (Exception e)
+            catch
             {
-                return Json(new { Success = false, e.Message });
+                return notification.AddAccountFailure();
             }
         }
 

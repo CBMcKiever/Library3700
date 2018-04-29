@@ -20,6 +20,14 @@
 
 <script>
     $(function () {
+        toastr.options = {
+            "positionClass": "toast-bottom-full-width",
+            "closeButton": false,
+            "showDuration": "300",
+            "hideDuration": "1000",
+            "timeOut": "5000",
+            "extendedTimeOut": "1000",
+        };
         $("#submit").click(function () {
             var url = "/AccountManagement/RegisterNewAccount";
             var data = {
@@ -30,7 +38,7 @@
             };
 
             $.post(url, data, function (response) {
-                alert(response.Message);
+                toastr.success(response.msg);
                 $("input[type=text]").each(function () {
                     $(this).val("");
                 });

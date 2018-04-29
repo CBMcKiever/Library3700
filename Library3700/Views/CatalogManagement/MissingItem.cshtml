@@ -1,0 +1,54 @@
+﻿@model Library3700.Models.ViewModels.ItemStatusViewModel
+@{
+    ViewBag.Title = "MissingItem";
+}
+
+<br />
+<h2>Report Missing Item</h2>
+@if (Model.ItemList == null)
+{
+    <h2>You have no checked out items that could go missing.</h2>
+}
+else
+{
+    <div class="container">
+        <div class="form-group">
+            @Html.LabelFor(model => model.ItemID, "Select Missing Item: ", new { @class = "control-label col-md-4" })
+            <div class="col-md-12">
+                @Html.DropDownListFor(model => model.ItemID, new SelectList(Model.ItemList, "ItemID", "Title"), new { @id = "ItemID" })
+            </div>
+        </div>
+        <div>
+            <input type="hidden" id="statusTypeID" value="3" />
+            <input type="hidden" id="AccountID" value="@Model.AccountID" />
+            <a class="btn btn-success" href="/AccountManagement/Home">Cancel</a>
+            <input class="btn btn-primary" value="Submit" type="submit" id="submitMissingButton" />
+        </div>
+    </div>
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<head>
+    <link href="~/Content/CSS/CatalogCSS.css" rel="stylesheet" />
+    <script src="~/Scripts/jquery-3.3.1.min.js"></script>
+    <script src="~/Scripts/javascript/catalogitem.js"></script>
+</head>

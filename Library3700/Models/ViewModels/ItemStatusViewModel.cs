@@ -16,5 +16,7 @@ namespace Library3700.Models.ViewModels
         public int itemStatusTypeID { get; set; }
         public IEnumerable<Item> ItemList { get; set; }
         public IEnumerable<Account> AccountList { get; set; }
+        public IEnumerable<Item> MissingItemList { get; set; }
+        public string ItemStatusText { get; set; }
     }
 }
