@@ -25,6 +25,12 @@ namespace Library3700.Controllers
             public bool IsLibrarian { get; set; }
         }
         
+        public class ChangeAccountStatusRequest
+        {
+            public string User { get; set; }
+            public byte StatusId { get; set; }
+        }
+
         /// <summary>
         /// If user tries to hit index, redirect to Home action
         /// </summary>
@@ -111,8 +117,17 @@ namespace Library3700.Controllers
                             };
 
                             db.Logins.Add(newLogin);
+
+                            var accountStatus = new AccountStatusLog
+                            {
+                                AccountId = newAccount.AccountId,
+                                AccountStatusTypeId = 1,
+                                LogDateTime = DateTime.Now
+                            };
+
+                            db.AccountStatusLogs.Add(accountStatus);
+
                             db.SaveChanges();
-                            
                             transaction.Commit();
                         }
                         catch (Exception e)
@@ -220,6 +235,118 @@ namespace Library3700.Controllers
                     }
                 }
             }
+        }
+
+        /// <summary>
+        /// Display view to update a user's account status
+        /// </summary>
+        /// <returns></returns>
+        public ActionResult UpdateAccountStatus()
+        {
+            using (var db = new LibraryEntities())
+            {
+                var statuses = db.AccountStatusTypes.ToList();
+                return View(statuses);
+            }
+        }
+
+        /// <summary>
+        /// Handle update account status form request
+        /// </summary>
+        /// <param name="request">Request parameters</param>
+        /// <returns></returns>
+        [HttpPost]
+        public ActionResult ChangeAccountStatus(ChangeAccountStatusRequest request)
+        {
+            using (var db = new LibraryEntities())
+            {
+                // select account associated with username
+                var targetAccount = FindAccount(db, request.User);
+
+                if (targetAccount == null)
+                {
+                    // if user not found
+                    return notification.ResetPasswordUserNotFound();
+                }
+
+                var newStatus = new AccountStatusLog
+                {
+                    AccountId = targetAccount.AccountId,
+                    AccountStatusTypeId = request.StatusId,
+                    LogDateTime = DateTime.Now
+                };
+
+                using (var transaction = db.Database.BeginTransaction())
+                {
+                    try
+                    {
+                        db.AccountStatusLogs.Add(newStatus);
+                        db.SaveChanges();
+                        transaction.Commit();
+
+                        return notification.UpdateAccountStatusSuccess();
+                    }
+                    catch (Exception)
+                    {
+                        transaction.Rollback();
+                        return notification.UnknownError();
+                    }
+                }
+            }
+        }
+
+        /// <summary>
+        /// Find an account with a given ID
+        /// </summary>
+        /// <param name="db">Database context</param>
+        /// <param name="accountId">Accoutn ID/number</param>
+        /// <returns></returns>
+        private Account FindAccount(LibraryEntities db, int accountId)
+        {
+            return db.Accounts.Where(x => x.AccountId == accountId).SingleOrDefault();
+        }
+
+        /// <summary>
+        /// Find an account with a given username
+        /// </summary>
+        /// <param name="db">Database context</param>
+        /// <param name="username">Associated username</param>
+        /// <returns></returns>
+        private Account FindAccount(LibraryEntities db, string username)
+        {
+            int accountId = db.Logins.Where(x => x.Username == username).Select(x => x.AccountId).SingleOrDefault();
+            return FindAccount(db, accountId);
+        }
+
+        /// <summary>
+        /// Gets current status for an account
+        /// </summary>
+        /// <param name="accountId">Account number/ID</param>
+        /// <returns>Current account status</returns>
+        private AccountStatusType AccountStatus(LibraryEntities db, int accountId)
+        {
+            var recentLog = db.AccountStatusLogs
+                    .Where(x => x.AccountId == accountId)
+                    .OrderByDescending(x => x.LogDateTime)
+                    .FirstOrDefault();
+
+            var currentStatus = db.AccountStatusTypes
+                .Where(x => x.AccountStatusTypeId == recentLog.AccountStatusTypeId)
+                .SingleOrDefault();
+
+            return currentStatus;
+        }
+
+        /// <summary>
+        /// Gets current status for an account
+        /// </summary>
+        /// <param name="db">Database context</param>
+        /// <param name="username">Username for an associated account</param>
+        /// <returns>Current account status</returns>
+        private AccountStatusType AccountStatus(LibraryEntities db, string username)
+        {
+            int accountId = db.Logins.Where(x => x.Username == username).Select(x => x.AccountId).SingleOrDefault();
+            return AccountStatus(db, accountId);
         }
 
         /// <summary>

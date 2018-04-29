@@ -1,0 +1,38 @@
+﻿@model List<Library3700.Models.AccountStatusType>
+@{
+    ViewBag.Title = "Change Account Status";
+}
+<br />
+@Html.ActionLink("< Back", "Home", "AccountManagement")
+<br />
+<br />
+<h2>Change Account Status</h2>
+<br />
+<div>
+    <input placeholder="Username" type="text" id="user" />
+    <select id="status">
+        <option disabled selected>Status</option>
+        @foreach (var statusType in Model)
+        {
+            <option value="@statusType.AccountStatusTypeId">@statusType.StatusTypeName</option>
+        }
+    </select>
+    <input id="submit" type="button" value="Submit" />
+</div>
+
+<script>
+    $(function () {
+        $("#submit").click(function () {
+            $.post(
+                "/AccountManagement/ChangeAccountStatus",
+                { User: $("#user").val(), StatusId: $("#status").val() },
+                function (response) {
+                    alert(response.Message);
+                    if (response.Success) {
+                        window.location = "/AccountManagement/Home";
+                    }
+                }
+            );
+        });
+    });
+</script>

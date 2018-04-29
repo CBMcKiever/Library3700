@@ -95,6 +95,11 @@ namespace Library3700.Controllers
             return Json(new { Success = false, Message = "An unexpected error has occurred!" });
         }
 
+        public ActionResult UpdateAccountStatusSuccess()
+        {
+            return Json(new { Success = true, Message = "Account status updated" });
+        }
+
         //public class Notification
         //{
         //    private static int _count;
