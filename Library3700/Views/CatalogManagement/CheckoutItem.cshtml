@@ -3,6 +3,9 @@
     ViewBag.Title = "CheckoutItem";
 }
 <br />
+<br />
+@Html.ActionLink("< Back", "Home", "AccountManagement")
+<br />
 <h2>Checkout Item</h2>
 @if (Model.ItemList == null)
 {
@@ -32,8 +35,8 @@ else
 
 }
 
-    <head>
-        <link href="~/Content/CSS/CatalogCSS.css" rel="stylesheet" />
-        <script src="~/Scripts/jquery-3.3.1.min.js"></script>
-        <script src="~/Scripts/javascript/catalogitem.js"></script>
-    </head>
+<head>
+    <link href="~/Content/CSS/CatalogCSS.css" rel="stylesheet" />
+    <script src="~/Scripts/jquery-3.3.1.min.js"></script>
+    <script src="~/Scripts/javascript/catalogitem.js"></script>
+</head>

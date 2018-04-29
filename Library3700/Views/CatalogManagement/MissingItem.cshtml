@@ -5,9 +5,9 @@
 
 <br />
 <h2>Report Missing Item</h2>
-@if (Model.ItemList == null)
+@if (Model.ItemList == null || Model.ItemList.Count() == 0)
 {
-    <h2>You have no checked out items that could go missing.</h2>
+    <h3>You have no checked out items that could go missing.</h3>
 }
 else
 {
