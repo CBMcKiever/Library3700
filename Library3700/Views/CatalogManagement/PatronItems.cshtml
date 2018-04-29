@@ -1,0 +1,41 @@
+﻿@model List<Library3700.Models.ViewModels.AccountItems>
+
+
+@{ 
+    ViewBag.Title = "Check Out Items";
+}
+
+<h3 id="patronItemsTitle">Checked Out Items</h3>
+<hr />
+<div>
+    @if (Model == null)
+    {
+        <h3>You have no items checked out.</h3>
+    }
+    else
+    {
+        <table class="table" id="itemTable">
+            <thead>
+                <tr>
+                    <th scope="col">Title</th>
+                    <th scope="col">Author</th>
+                    <th scope="col">Genre</th>
+                    <th scope="col">Published</th>
+                    <th scope="col">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr data-item-id=@item.itemID>
+                        <td>@item.Title</td>
+                        <td>@item.Author</td>
+                        <td>@item.Genre</td>
+                        <td>@item.itemID</td>
+                        <td>@item.itemStatusText</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+</div>
