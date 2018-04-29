@@ -26,7 +26,10 @@
             success: function (n) {
                 if (n.success) {
                     toastr.success(n.msg);
-                    window.location.href = "/CatalogManagement/Index"
+                    var delay = 1000;
+                    setTimeout(function () {
+                        window.location.href = "/CatalogManagement/Index"
+                    }, delay);
                 }
                 else {
                     toastr.error(n.msg);
@@ -46,7 +49,10 @@
             success: function (n) {
                 if (n.success) {
                     toastr.success(n.msg);
-                    window.location.href = "/CatalogManagement/Index"
+                    var delay = 1000;
+                    setTimeout(function () {
+                        window.location.href = "/CatalogManagement/Index"
+                    }, delay);
                 }
                 else {
                     toastr.error(n.msg);
@@ -54,6 +60,38 @@
             }
         });
     });
+
+
+    var deleteItem = $('#deleteItemfromcatalog');
+    deleteItem.on('click', function () {
+        var itemID = $('#deleteID').val();
+        $.ajax({
+            type: "POST",
+            url: "/CatalogManagement/DeleteItem",
+            data: { id: itemID },
+            success: function (n) {
+                if (n.success) {
+                    toastr.success(n.msg);
+                    var delay = 1000;
+                    setTimeout(function () {
+                        window.location.href = "/CatalogManagement/Index"
+                    }, delay);
+                }
+                else {
+                    toastr.error(n.msg);
+                }
+            }
+        });
+    });
+
+    $('#closedeleteitemmodal').on('click', function () {
+        $('#delete-item-btn-@item.ItemId').val('');
+    });
+
+    $('.close').on('click', function () {
+        $('#delete-item-btn-@item.ItemId').val('');
+    });
+
 
    
 

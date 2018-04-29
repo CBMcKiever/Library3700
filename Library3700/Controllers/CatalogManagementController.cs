@@ -181,12 +181,12 @@ namespace Library3700.Controllers
                     if (ModelState.IsValid)
                     {
                         db.SaveChanges();
-                        return Json(new { success = "true" });
+                        return notification.EditItemSuccess();
                     }
                 }
-                catch (DataException e)
+                catch
                 {
-                    return new HttpStatusCodeResult(HttpStatusCode.InternalServerError);
+                    return notification.EditItemFailure();
                 }
                 return View(item);
             }
@@ -214,12 +214,12 @@ namespace Library3700.Controllers
                     }
                     db.Items.Remove(item);
                     db.SaveChanges();
+                    return notification.DeleteItemSuccess();
                 }
                 catch
                 {
-                    return new HttpStatusCodeResult(HttpStatusCode.InternalServerError);
+                    return notification.DeleteItemFailure();
                 }
-                return View("Index");
             }
         }
 

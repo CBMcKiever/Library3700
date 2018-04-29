@@ -18,6 +18,26 @@ namespace Library3700.Controllers
             return Json(new { success = false, msg = "Unable to create item. Please try again." });
         }
 
+        public ActionResult EditItemSuccess()
+        {
+            return Json(new { success = true, msg = "Item edited successfully." });
+        }
+
+        public ActionResult EditItemFailure()
+        {
+            return Json(new { success = false, msg = "Unable to edit item. Please try again." });
+        }
+
+        public ActionResult DeleteItemSuccess()
+        {
+            return Json(new { success = true, msg = "Item deleted successfully." });
+        }
+        
+        public ActionResult DeleteItemFailure()
+        {
+            return Json(new { success = false, msg = "Unable to delete item. Please try again." });
+        }
+
         //public class Notification
         //{
         //    private static int _count;

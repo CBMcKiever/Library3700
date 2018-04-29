@@ -43,14 +43,47 @@
                         <td>
                             <a class="btn btn-primary" href="/CatalogManagement/ItemDetails?id=@item.ItemId">View Details</a>
                             <a class="btn btn-success" href="/CatalogManagement/EditItem?id=@item.ItemId">Edit Item</a>
-                            <a class="btn btn-danger" href="/CatalogManagement/DeleteItem?id=@item.ItemId">Delete Item</a>
+                            <a style="color: white" class="btn btn-danger" id="delete-item-btn-@item.ItemId" data-toggle="modal" data-target="#deleteitemModal">Delete Item</a>
+                            @*<a class="btn btn-danger" href="/CatalogManagement/DeleteItem?id=@item.ItemId">Delete Item</a>*@
                         </td>
                     </tr>
+
+
+
+                    <!--Modal to delete an item-->
+                    <div class="modal fade" id="deleteitemModal" tabindex="-1" role="dialog" aria-labelledby="deleteitemModalLabel" aria-hidden="true">
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content" style="text-align: center !important">
+                                <!--Modal header-->
+                                <div class="modal-header">
+                                    <h3 class="modal-title" id="deleteitemModalLabel">Delete Item</h3>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <!--Modal body-->
+                                    <div class="modal-body">
+                                        @{Html.RenderPartial("_DeleteItem", new Library3700.Models.ViewModels.CatalogItemViewModel());}
+                                    </div>
+                                    <!--Modal footer-->
+                                    <div class="modal-footer">
+                                        <br />
+                                        <input type="hidden" id="deleteID" value="@item.ItemId"/>
+                                        <button id="closedeleteitemmodal" type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                                        <button id="deleteItemfromcatalog" type="submit" class="btn btn-primary">Delete</button>
+                                    </div>
+                            </div>
+                        </div>
+                    </div>
                 }
             </tbody>
         </table>
+
     }
 </div>
+
+
+
 
 <script>
     function catalogSearchFunction() {
@@ -79,4 +112,5 @@
     <script src="~/Scripts/jquery-3.3.1.min.js"></script>
     <script src="~/Scripts/bootstrap.min.js"></script>
     <script src="~/Scripts/HideSeek-master/jquery.hideseek.min.js"></script>
+    <script src="~/Scripts/javascript/catalogitem.js"></script>
 </head>

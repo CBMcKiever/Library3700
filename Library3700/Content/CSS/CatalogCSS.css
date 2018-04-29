@@ -11,3 +11,9 @@
     border: 1px solid #ddd;
     margin-bottom: 12px;
 }
+
+#deleteitemModalLabel {
+    align-content: center !important;
+    text-align: center !important;
+    float: left;
+}

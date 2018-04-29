@@ -379,6 +379,7 @@
     <Content Include="Views\CatalogManagement\PatronItems.cshtml" />
     <Content Include="Views\Reporting\PatronReport.cshtml" />
     <Content Include="Views\CatalogManagement\ReportMissingItem.cshtml" />
+    <Content Include="Views\CatalogManagement\_DeleteItem.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
