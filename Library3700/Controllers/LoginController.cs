@@ -12,9 +12,13 @@ using System.Web.Mvc;
 
 namespace Library3700.Controllers
 {
+    
+
     [AllowAnonymous]
     public class LoginController : Controller
     {
+        NotificationController notification = new NotificationController();
+
         /// <summary>
         /// A simple wrapper for login requests
         /// </summary>
@@ -35,6 +39,7 @@ namespace Library3700.Controllers
             }
             else
             {
+                ViewBag.LoginError = TempData?["loginError"];
                 return View();
             }
         }
@@ -60,10 +65,23 @@ namespace Library3700.Controllers
 
                     if (targetLogin == null)
                     {
-                        throw new ApplicationException("The username or password is incorrect!");
+                        TempData["loginError"] = "The username or password is incorrect";
+                        return RedirectToAction("Index");
                     }
 
                     var userAccount = targetLogin.Account;
+                    var recentStatusLog = userAccount.AccountStatusLogs.OrderByDescending(x => x.LogDateTime).FirstOrDefault();
+                    var currentStatus = recentStatusLog.AccountStatusType.StatusTypeName;
+                    if (currentStatus == "terminated")
+                    {
+                        TempData["loginError"] = "The username or password is incorrect";
+                        return RedirectToAction("Index");
+                    }
+                    else if (currentStatus == "suspended")
+                    {
+                        TempData["loginError"] = "The account with the given username has been suspended";
+                        return RedirectToAction("Index");
+                    }
 
                     var identity = new ClaimsIdentity(new[]
                     {
@@ -90,12 +108,6 @@ namespace Library3700.Controllers
                         return RedirectToAction("Home", "AccountManagement");
                     }
                 }
-            }
-            catch (ApplicationException e)
-            {
-                //NotificationController.CreateNotification(e.Message);
-                // TODO: send notification
-                return View("Index");
             }
             catch (Exception e)
             {

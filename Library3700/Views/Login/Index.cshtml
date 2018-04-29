@@ -1,5 +1,4 @@
-﻿
-@{
+﻿@{
     ViewBag.Title = "Login";
 }
 <br />
@@ -13,6 +12,13 @@
 </form>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/js-sha512/0.7.1/sha512.min.js"></script>
 <script>
+    $(function () {
+        @if (!String.IsNullOrWhiteSpace((string)ViewBag.LoginError))
+        {
+        @:alert("@((string)ViewBag.LoginError)");
+        }
+    });
+
     $("input[name=Password").change(function () {
         var password = $(this).val();
         var passwordHash = sha512(password);
