@@ -24,6 +24,15 @@ namespace Library3700.Controllers
 
             public bool IsLibrarian { get; set; }
         }
+        
+        /// <summary>
+        /// If user tries to hit index, redirect to Home action
+        /// </summary>
+        /// <returns></returns>
+        public ActionResult Index()
+        {
+            return RedirectToAction("Home");
+        }
 
         /// <summary>
         /// Display the appropriate home page based on who is logged in.
