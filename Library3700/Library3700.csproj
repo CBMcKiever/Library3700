@@ -136,6 +136,8 @@
     <Content Include="Content\CSS\ItemDetailsCSS.css" />
     <Content Include="Content\Pictures\libraryinfosystem.png" />
     <Content Include="Content\Site.css" />
+    <Content Include="Content\toastr.css" />
+    <Content Include="Content\toastr.min.css" />
     <Content Include="Global.asax" />
     <Content Include="Models\LibraryModel.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
@@ -252,6 +254,8 @@
     <Content Include="Scripts\fontawesome-free-5.0.10\web-fonts-with-css\webfonts\fa-solid-900.ttf" />
     <Content Include="Scripts\fontawesome-free-5.0.10\web-fonts-with-css\webfonts\fa-solid-900.woff" />
     <Content Include="Scripts\fontawesome-free-5.0.10\web-fonts-with-css\webfonts\fa-solid-900.woff2" />
+    <Content Include="Content\toastr.scss" />
+    <Content Include="Content\toastr.less" />
     <None Include="Scripts\jquery-3.3.1.intellisense.js" />
     <Content Include="Scripts\jquery-3.3.1.js" />
     <Content Include="Scripts\jquery-3.3.1.min.js" />
@@ -262,6 +266,8 @@
     <Content Include="Scripts\popper-utils.min.js" />
     <Content Include="Scripts\popper.js" />
     <Content Include="Scripts\popper.min.js" />
+    <Content Include="Scripts\toastr.js" />
+    <Content Include="Scripts\toastr.min.js" />
     <Content Include="Scripts\umd\popper-utils.js" />
     <Content Include="Scripts\umd\popper-utils.min.js" />
     <Content Include="Scripts\umd\popper.js" />

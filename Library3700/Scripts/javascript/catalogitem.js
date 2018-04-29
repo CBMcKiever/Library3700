@@ -23,12 +23,14 @@
             datatype: 'json',
             contentType: "application/json; charset=utf-8",
             data: JSON.stringify({ catalogItem: catalogItem }),
-            success: function () {
-                alert('New item created.');
-                window.location.href = "/CatalogManagement/Index"
-            },
-            error: function () {
-                alert('Unable to create new item. Please try again.');
+            success: function (n) {
+                if (n.success) {
+                    toastr.success(n.msg);
+                    window.location.href = "/CatalogManagement/Index"
+                }
+                else {
+                    toastr.error(n.msg);
+                }
             }
         });
     });
@@ -41,12 +43,14 @@
             datatype: 'json',
             contentType: "application/json; charset=utf-8",
             data: JSON.stringify({ catalogItem: catalogItem }),
-            success: function () {
-                alert('Item successfully updated.');
-                window.location.href = "/CatalogManagement/Index"
-            },
-            error: function () {
-                alert('Unable to update item. Please try again.');
+            success: function (n) {
+                if (n.success) {
+                    toastr.success(n.msg);
+                    window.location.href = "/CatalogManagement/Index"
+                }
+                else {
+                    toastr.error(n.msg);
+                }
             }
         });
     });

@@ -7,6 +7,7 @@ using System.Web;
 using System.Web.Mvc;
 using Library3700.Models;
 using Library3700.Models.ViewModels;
+using Library3700.Controllers;
 
 
 namespace Library3700.Controllers
@@ -14,7 +15,7 @@ namespace Library3700.Controllers
     public class CatalogManagementController : Controller
     {
 
-
+        NotificationController notification = new NotificationController();
         /// <summary>
         ///         Index that will return a list of library books with the information to view
         /// </summary>
@@ -81,12 +82,12 @@ namespace Library3700.Controllers
                     {
                         db.Items.Add(item);
                         db.SaveChanges();
-                        return Json(new { success = "true" });
+                        return notification.SuccessItemCreation();
                     }
                 }
                 catch (DataException)
                 {
-                    return Json(new { sucess = "false" });
+                    return notification.FailureItemCreation();
                 }
                 return View(item);
             }
@@ -183,9 +184,9 @@ namespace Library3700.Controllers
                         return Json(new { success = "true" });
                     }
                 }
-                catch (DataException)
+                catch (DataException e)
                 {
-                    return Json(new { sucess = "false" });
+                    return new HttpStatusCodeResult(HttpStatusCode.InternalServerError);
                 }
                 return View(item);
             }

@@ -93,7 +93,7 @@ namespace Library3700.Controllers
             }
             catch (ApplicationException e)
             {
-                NotificationController.CreateNotification(e.Message);
+                //NotificationController.CreateNotification(e.Message);
                 // TODO: send notification
                 return View("Index");
             }
