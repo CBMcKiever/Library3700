@@ -1,5 +1,7 @@
 ﻿$(document).ready(function () {
 
+   
+
     function getItem() {
         var item = {
             ItemID: $("#itemID").val(),
@@ -103,6 +105,9 @@
 
     var checkOutItem = $('#submitCheckoutButton');
     checkOutItem.on('click', function () {
+        toastr.options = {
+            "positionClass": "toast-bottom-full-width"
+        };
         var itemstatusviewmodel = updateItemStatus();
         $.ajax({
             type: "POST",

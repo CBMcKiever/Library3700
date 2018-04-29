@@ -245,9 +245,20 @@ namespace Library3700.Controllers
                 {
                     //TODO: get the last item status and not all of the item status
                     ItemStatusViewModel AccountItemsCheckout = new ItemStatusViewModel();
-                    List<Item> ItemList = db.ItemStatusLogs.Where(x => x.ItemStatusTypeId == 1).Select(f => f.Item).ToList();
+                    List<Item> ItemList = db.ItemStatusLogs.Select(f => f.Item).ToList();
+                    List<Item> NewItemList = new List<Item>();
+
+                    foreach (var item in ItemList)
+                    {
+                        Item listItem = ItemList.Where(x => x.ItemId == item.ItemId).Last();
+                        byte lastStatus = listItem.ItemStatusLogs.Select(f => f.ItemStatusTypeId).Last();
+                        if (lastStatus == 1)
+                        {
+                            NewItemList.Add(listItem);
+                        }
+                    }
                     List<Account> AccountList = db.Accounts.Where(x => x.IsLibrarian == false).ToList();
-                    AccountItemsCheckout.ItemList = ItemList;
+                    AccountItemsCheckout.ItemList = NewItemList;
                     AccountItemsCheckout.AccountList = AccountList;
                     AccountItemsCheckout.ItemID = -1;
                     AccountItemsCheckout.AccountID = -1;
