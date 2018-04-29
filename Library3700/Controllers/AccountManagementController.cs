@@ -183,6 +183,7 @@ namespace Library3700.Controllers
         /// </summary>
         /// <param name="user">User to give new temporary password</param>
         /// <returns>Json result indicating success and new temporary password.</returns>
+        [HttpPost]
         public JsonResult NewTemporaryPassword(string user)
         {
             using (var db = new LibraryEntities())
