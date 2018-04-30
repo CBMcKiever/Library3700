@@ -38,7 +38,7 @@
             };
 
             $.post(url, data, function (response) {
-                toastr.success(response.msg);
+                alert(response.msg);
                 $("input[type=text]").each(function () {
                     $(this).val("");
                 });
