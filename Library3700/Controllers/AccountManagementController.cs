@@ -343,7 +343,7 @@ namespace Library3700.Controllers
         /// <param name="db">Database context</param>
         /// <param name="username">Username for an associated account</param>
         /// <returns>Current account status</returns>
-        private AccountStatusType AccountStatus(LibraryEntities db, string username)
+        public AccountStatusType AccountStatus(LibraryEntities db, string username)
         {
             int accountId = db.Logins.Where(x => x.Username == username).Select(x => x.AccountId).SingleOrDefault();
             return AccountStatus(db, accountId);

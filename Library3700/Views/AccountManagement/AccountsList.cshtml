@@ -1,0 +1,34 @@
+﻿@model List<Library3700.Models.ViewModels.AccountItems>
+@{ 
+    ViewBag.Title = "Existing Accounts";
+}
+
+<h3 id="accountsTitle">Existing Accounts</h3>
+<hr />
+<div>
+    @if (Model == null)
+    {
+        <h3>There are currently no existing accounts.</h3>
+    }
+    else
+    {
+        <table class="table" id="itemTable">
+            <thead>
+                <tr>
+                    <th scope="col">Account ID</th>
+                    <th scope="col">First Name</th>
+                    <th scope="col">Last Name</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var account in Model)
+                {
+                    <tr data-item-id=@account.accountID>
+                        <td>@account.accountID</td>
+                        <td>@account.FirstName</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+</div>

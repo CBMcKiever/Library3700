@@ -63,5 +63,27 @@ namespace Library3700.Controllers
                 }
             }
         }
+
+        public ActionResult AccountsList()
+        {
+            using (LibraryEntities db = new LibraryEntities())
+            {
+                List<Account> accounts = db.Accounts.ToList();
+                List<Accounts> accountList = new List<Accounts>();
+                foreach (var account in accounts)
+                {
+                    Accounts acc = new Accounts
+                    {
+                        FirstName = account.FirstName,
+                        LastName = account.LastName,
+                        IsLibrarian = account.IsLibrarian,
+                        AccountID = account.AccountId,
+                        
+                    };
+                    accountList.Add(acc);
+                }
+            }
+                return View();
+        }
     }
 }
