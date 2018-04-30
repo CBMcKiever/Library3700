@@ -87,7 +87,7 @@ namespace Library3700.Controllers
                         ItemStatusLog updateStatus = new ItemStatusLog
                         {
                             ItemId = item.ItemId,
-                            AccountId = db.Accounts.Where(x => x.IsLibrarian == true && x.AccountId == 1).Select(f => f.AccountId).FirstOrDefault(),
+                            AccountId = ((AccountAdapter)System.Web.HttpContext.Current.Session["activeAccount"]).AccountNumber,
                             ItemStatusTypeId = 1,
                             ItemStatusType = db.ItemStatusTypes.Where(x => x.ItemStatusTypeId == 1).FirstOrDefault(),
                             LogDateTime = DateTime.Now
@@ -98,7 +98,7 @@ namespace Library3700.Controllers
                         return notification.SuccessItemCreation();
                     }
                 }
-                catch (DataException)
+                catch (DataException e)
                 {
                     return notification.FailureItemCreation();
                 }
