@@ -135,9 +135,6 @@
         });
     });
 
-
-
-    var reserveItem = $('.reserveItemButton');
     $('.reserveItemButton').on('click', function () {
         toastr.options = {
             "positionClass": "toast-bottom-full-width",
