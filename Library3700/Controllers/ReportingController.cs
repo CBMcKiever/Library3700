@@ -17,14 +17,20 @@ namespace Library3700.Controllers
         {
             return View();
         }
-
+        /// <summary>
+        /// generates patron reports
+        /// </summary>
+        /// <returns></returns>
         public ActionResult GeneratePatronReport()
         {
             var activeAccount = (AccountAdapter)System.Web.HttpContext.Current.Session["activeAccount"];
             List<AccountItems> patronItems = GeneratePatronItemsList(activeAccount.AccountNumber);
             return View("PatronReport", patronItems);
         }
-
+        /// <summary>
+        /// generates librarian reports
+        /// </summary>
+        /// <returns></returns>
         public ActionResult GenerateLibrarianReport()
         {
             return View("LibrarianReport", AccountsList());
@@ -69,6 +75,10 @@ namespace Library3700.Controllers
             }
         }
 
+        /// <summary>
+        /// this method returns a list of accounts 
+        /// </summary>
+        /// <returns></returns>
         public static List<Accounts> AccountsList()
         {
             using (LibraryEntities db = new LibraryEntities())

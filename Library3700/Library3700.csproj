@@ -141,6 +141,8 @@
     <Content Include="Content\Site.css" />
     <Content Include="Content\toastr.css" />
     <Content Include="Content\toastr.min.css" />
+    <Content Include="Documentation\ApplicationClassModel.png" />
+    <Content Include="Documentation\Project Instructions.txt" />
     <Content Include="Global.asax" />
     <Content Include="Models\LibraryModel.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
@@ -259,6 +261,8 @@
     <Content Include="Scripts\fontawesome-free-5.0.10\web-fonts-with-css\webfonts\fa-solid-900.woff2" />
     <Content Include="Content\toastr.scss" />
     <Content Include="Content\toastr.less" />
+    <Content Include="Documentation\PhaseIIDocumentation.docx" />
+    <Content Include="Documentation\LibraryinfosystemDocumentation.docx" />
     <None Include="Properties\PublishProfiles\Comp3700Library - FTP.pubxml" />
     <None Include="Properties\PublishProfiles\Comp3700Library - Web Deploy.pubxml" />
     <None Include="Scripts\jquery-3.3.1.intellisense.js" />

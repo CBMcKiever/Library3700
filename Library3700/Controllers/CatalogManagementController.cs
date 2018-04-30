@@ -17,7 +17,7 @@ namespace Library3700.Controllers
 
         NotificationController notification = new NotificationController();
         /// <summary>
-        ///         Index that will return a list of library books with the information to view
+        ///         Index that will return a list of library items with the information to view
         /// </summary>
         public ActionResult Index()
         {
@@ -51,7 +51,9 @@ namespace Library3700.Controllers
             return View();
         }
 
-        //post method to create an item
+        /// <summary>
+        /// post method to create an item 
+        /// </summary>
         [HttpPost]
         public ActionResult CreateItem(CatalogItemViewModel catalogItem)
         {
@@ -66,6 +68,7 @@ namespace Library3700.Controllers
                     item.Title = catalogItem.Title;
                     item.Genre = catalogItem.Genre;
                     item.PublicationYear = catalogItem.PublicationYear;
+                    //determine if item is a book or audiobook
                     if (catalogItem.ItemTypeName.ToLower() == "book")
                     {
                         catalogItem.ItemTypeId = 1;
@@ -78,12 +81,12 @@ namespace Library3700.Controllers
                         item.ItemTypeId = catalogItem.ItemTypeId;
                         item.ItemType = db.ItemTypes.Where(x => x.ItemTypeId == catalogItem.ItemTypeId).FirstOrDefault();
                     }
-
+                    //if object modelstate is valid then add item and save to db
                     if (ModelState.IsValid)
                     {
                         db.Items.Add(item);
                         db.SaveChanges();
-
+                        //create an item status log for the added item
                         ItemStatusLog updateStatus = new ItemStatusLog
                         {
                             ItemId = item.ItemId,
@@ -98,6 +101,7 @@ namespace Library3700.Controllers
                         return notification.SuccessItemCreation();
                     }
                 }
+                //catch any exceptions and return them
                 catch (DataException e)
                 {
                     return notification.FailureItemCreation();
@@ -106,9 +110,12 @@ namespace Library3700.Controllers
             }
         }
 
-
+        /// <summary>
+        /// finds an item by the item id and returns the item to the details view
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         [HttpGet]
-        //finds an item by the item id and returns the item to the details view
         public ActionResult ItemDetails(int id)
         {
             using (LibraryEntities db = new LibraryEntities())
@@ -135,6 +142,11 @@ namespace Library3700.Controllers
             }
         }
 
+        /// <summary>
+        /// returns the item to to be edited to the view
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         [HttpGet]
         public ActionResult EditItem(int id)
         {
@@ -163,7 +175,11 @@ namespace Library3700.Controllers
 
         }
 
-
+        /// <summary>
+        /// saves the item after it has been edited to the database
+        /// </summary>
+        /// <param name="catalogItem"></param>
+        /// <returns></returns>
         [HttpPost]
         public ActionResult EditItem(CatalogItemViewModel catalogItem)
         {
@@ -208,7 +224,7 @@ namespace Library3700.Controllers
 
 
         /// <summary>
-        /// arhcives an item
+        /// deletes the item logs for an item and then deletes the item
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
@@ -236,6 +252,10 @@ namespace Library3700.Controllers
             }
         }
 
+        /// <summary>
+        /// gets the item checkout view and returns a list of items and accounts the item can be checked 
+        /// </summary>
+        /// <returns></returns>
         [HttpGet]
         public ActionResult CheckoutItem()
         {
@@ -271,6 +291,11 @@ namespace Library3700.Controllers
             }
         }
 
+        /// <summary>
+        /// this method return a differnt view depending on what status update the item is needing
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         [HttpGet]
         public ActionResult UpdateItemStatus(int id)
         {
@@ -345,7 +370,11 @@ namespace Library3700.Controllers
             }
         }
 
-
+        /// <summary>
+        /// this method takes in an int id sent from the view to update an item's status
+        /// </summary>
+        /// <param name="itemstatusviewmodel"></param>
+        /// <returns></returns>
         [HttpPost]
         public ActionResult UpdateItemStatus(ItemStatusViewModel itemstatusviewmodel)
         {
@@ -415,6 +444,11 @@ namespace Library3700.Controllers
             }
         }
 
+        /// <summary>
+        /// this private method will generate a list of items that a patron has checked out or reserved
+        /// </summary>
+        /// <param name="accountID"></param>
+        /// <returns></returns>
         private static List<AccountItems> GeneratePatronItemsList(int accountID)
         {
             using (LibraryEntities db = new LibraryEntities())
@@ -449,6 +483,10 @@ namespace Library3700.Controllers
             }
         }
 
+        /// <summary>
+        /// this method will return to the view the patron's items
+        /// </summary>
+        /// <returns></returns>
         public ActionResult PatronItems()
         {
             var activeAccount = (AccountAdapter)System.Web.HttpContext.Current.Session["activeAccount"];
@@ -456,6 +494,10 @@ namespace Library3700.Controllers
             return View(patronItems);
         }
 
+        /// <summary>
+        /// this method is returns a missing item list for the librarian to view
+        /// </summary>
+        /// <returns></returns>
         [Authorize(Roles ="librarian")]
         public ActionResult MissingItemList()
         {
