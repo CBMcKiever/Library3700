@@ -27,7 +27,7 @@ namespace Library3700.Controllers
 
         public ActionResult GenerateLibrarianReport()
         {
-            return View();
+            return View("LibrarianReport", AccountsList());
         }
 
         private static List<AccountItems> GeneratePatronItemsList(int accountID)
@@ -64,7 +64,7 @@ namespace Library3700.Controllers
             }
         }
 
-        public ActionResult AccountsList()
+        public static List<Accounts> AccountsList()
         {
             using (LibraryEntities db = new LibraryEntities())
             {
@@ -79,11 +79,12 @@ namespace Library3700.Controllers
                         IsLibrarian = account.IsLibrarian,
                         AccountID = account.AccountId,
                         
+                        AccountItems = GeneratePatronItemsList(account.AccountId)
                     };
                     accountList.Add(acc);
                 }
+                return accountList;
             }
-                return View();
         }
     }
 }

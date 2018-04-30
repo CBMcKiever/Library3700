@@ -390,6 +390,7 @@
     <Content Include="Views\AccountManagement\ResetPassword.cshtml" />
     <Content Include="Views\CatalogManagement\CheckInItem.cshtml" />
     <Content Include="Views\AccountManagement\UpdateAccountStatus.cshtml" />
+    <Content Include="Views\Reporting\LibrarianReport.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

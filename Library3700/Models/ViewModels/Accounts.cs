@@ -13,5 +13,6 @@ namespace Library3700.Models.ViewModels
         public bool IsLibrarian { get; set; }
         public AccountStatusType AccountStatus { get; set; }
         public string EmailAddress { get; set; }
+        public List<AccountItems> AccountItems { get; set; }
     }
 }

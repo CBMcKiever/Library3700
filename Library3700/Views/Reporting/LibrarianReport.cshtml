@@ -1,4 +1,5 @@
-﻿
+﻿@model List<Library3700.Models.ViewModels.Accounts>
+
 @{
     ViewBag.Title = "LibrarianReport";
 }
@@ -9,14 +10,55 @@
 <br />
 <h2>Librarian Report</h2>
 
-@{ 
+@{
     var activeAccount = (Library3700.Models.Objects.Account.AccountAdapter)System.Web.HttpContext.Current.Session["activeAccount"];
 }
 
 <p>Welcome, @activeAccount.FirstName @activeAccount.LastName</p>
-<ul class="list-group">
-    <li class="list-group-item">Account #: @activeAccount.AccountNumber</li>
-    <li class="list-group-item">Email: @activeAccount.EmailAddress</li>
-</ul>
+
+@foreach (var account in Model)
+{
+    <ul class="list-group">
+        <li class="list-group-item">Account #: @account.AccountID</li>
+        <li class="list-group-item">Email: @account.EmailAddress</li>
+    </ul>
+    <br />
+
+    foreach (var accountItem in account.AccountItems)
+    {
+        if (account.AccountItems.Count() == 0)
+        {
+            continue;
+        }
+        else
+        {
+            <br />
+            <table class="table" id="itemTable">
+                <thead>
+                    <tr>
+                        <th scope="col">Title</th>
+                        <th scope="col">Author</th>
+                        <th scope="col">Genre</th>
+                        <th scope="col">Published</th>
+                        <th scope="col">Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                <tr data-item-id=@accountItem.itemID>
+                    <td>@accountItem.item.Title</td>
+                    <td>@accountItem.item.Author</td>
+                    <td>@accountItem.item.Genre</td>
+                    <td>@accountItem.item.PublicationYear</td>
+                    <td>@accountItem.itemStatusText</td>
+                </tr>
+                </tbody>
+            </table>
+            <br />
+        }
+
+    }
+
+}
+
 <br />
 <br />
