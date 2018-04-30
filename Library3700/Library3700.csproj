@@ -259,6 +259,8 @@
     <Content Include="Scripts\fontawesome-free-5.0.10\web-fonts-with-css\webfonts\fa-solid-900.woff2" />
     <Content Include="Content\toastr.scss" />
     <Content Include="Content\toastr.less" />
+    <None Include="Properties\PublishProfiles\Comp3700Library - FTP.pubxml" />
+    <None Include="Properties\PublishProfiles\Comp3700Library - Web Deploy.pubxml" />
     <None Include="Scripts\jquery-3.3.1.intellisense.js" />
     <Content Include="Scripts\jquery-3.3.1.js" />
     <Content Include="Scripts\jquery-3.3.1.min.js" />
