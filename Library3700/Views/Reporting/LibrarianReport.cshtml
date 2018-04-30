@@ -1,0 +1,22 @@
+﻿
+@{
+    ViewBag.Title = "LibrarianReport";
+}
+
+<br />
+@Html.ActionLink("< Back", "Home", "AccountManagement")
+<br />
+<br />
+<h2>Librarian Report</h2>
+
+@{ 
+    var activeAccount = (Library3700.Models.Objects.Account.AccountAdapter)System.Web.HttpContext.Current.Session["activeAccount"];
+}
+
+<p>Welcome, @activeAccount.FirstName @activeAccount.LastName</p>
+<ul class="list-group">
+    <li class="list-group-item">Account #: @activeAccount.AccountNumber</li>
+    <li class="list-group-item">Email: @activeAccount.EmailAddress</li>
+</ul>
+<br />
+<br />
