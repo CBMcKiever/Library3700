@@ -135,10 +135,7 @@
         });
     });
 
-
-    var reserveItem = $('#reserveItemButton-' + itemstatusviewmodel.ItemID);
-    reserveItem.one('click', function () {
-        $('#reserveItemButton').attr('disabled', 'disabled');
+    $('.reserveItemButton').on('click', function () {
         toastr.options = {
             "positionClass": "toast-bottom-full-width",
             "closeButton": false,

@@ -353,7 +353,20 @@ namespace Library3700.Controllers
             {
                 try
                 {
-                    
+                    if (itemstatusviewmodel.itemStatusTypeID == 2)
+                    {
+                        var currentStatus = db.ItemStatusLogs
+                            .Where(x => x.ItemId == itemstatusviewmodel.ItemID)
+                            .OrderByDescending(x => x.LogDateTime)
+                            .Select(x => x.ItemStatusTypeId)
+                            .FirstOrDefault();
+
+                        if (currentStatus == 2)
+                        {
+                            return null;
+                        }
+                    }
+
                     Item item = db.Items.Find(itemstatusviewmodel.ItemID);
                     Account account = db.Accounts.Find(itemstatusviewmodel.AccountID);
                     ItemStatusType itemStatusType = db.ItemStatusTypes.Find(itemstatusviewmodel.itemStatusTypeID);
