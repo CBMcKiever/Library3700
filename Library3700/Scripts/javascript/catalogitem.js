@@ -137,8 +137,8 @@
 
 
 
-    var reserveItem = $('#reserveItemButton');
-    reserveItem.on('click', function () {
+    var reserveItem = $('.reserveItemButton');
+    $('.reserveItemButton').on('click', function () {
         toastr.options = {
             "positionClass": "toast-bottom-full-width",
             "closeButton": false,
