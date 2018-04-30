@@ -68,7 +68,7 @@ namespace Library3700.Controllers
         {
             using (LibraryEntities db = new LibraryEntities())
             {
-                List<Account> accounts = db.Accounts.ToList();
+                List<Account> accounts = db.Accounts.Where(x => x.IsLibrarian == false).ToList();
                 List<Accounts> accountList = new List<Accounts>();
                 foreach (var account in accounts)
                 {
@@ -78,7 +78,7 @@ namespace Library3700.Controllers
                         LastName = account.LastName,
                         IsLibrarian = account.IsLibrarian,
                         AccountID = account.AccountId,
-                        
+                        EmailAddress = db.Logins.Where(x => x.AccountId == account.AccountId).Select(x => x.Username).SingleOrDefault(),
                         AccountItems = GeneratePatronItemsList(account.AccountId)
                     };
                     accountList.Add(acc);
