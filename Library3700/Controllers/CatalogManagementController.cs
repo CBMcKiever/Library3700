@@ -453,7 +453,8 @@ namespace Library3700.Controllers
                 try
                 {
                     ItemStatusViewModel AccountItemsCheckout = new ItemStatusViewModel();
-                    List<Item> ItemList = db.ItemStatusLogs.Select(f => f.Item).ToList();
+
+                    List<Item> ItemList = db.Items.ToList();
                     List<Item> NewItemList = new List<Item>();
 
                     foreach (var item in ItemList)

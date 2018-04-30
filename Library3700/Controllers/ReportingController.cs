@@ -36,7 +36,12 @@ namespace Library3700.Controllers
             {
                 try
                 {
-                    List<ItemStatusLog> accountitemList = db.ItemStatusLogs.Where(x => x.AccountId == accountID && (x.ItemStatusTypeId == 2 || x.ItemStatusTypeId == 4)).ToList();
+                    IEnumerable<ItemStatusLog> latestActions =
+                        from x in db.ItemStatusLogs
+                        group x by x.AccountId into g
+                        select g.OrderByDescending(y => y.LogDateTime).FirstOrDefault();
+
+                    List < ItemStatusLog > accountitemList = latestActions.Where(x => x.AccountId == accountID && (x.ItemStatusTypeId == 2 || x.ItemStatusTypeId == 4)).ToList();
                     List<AccountItems> accountItems = new List<AccountItems>();
 
                     if (accountitemList != null || accountitemList.Count != 0)
