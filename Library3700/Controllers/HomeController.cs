@@ -8,7 +8,7 @@ namespace Library3700.Controllers
 {
     public class HomeController : Controller
     {
-        // GET: Home
+        [Route("/")]
         public ActionResult Index()
         {
             return RedirectToAction("Home", "AccountManagement");
