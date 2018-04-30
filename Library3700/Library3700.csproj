@@ -391,6 +391,7 @@
     <Content Include="Views\CatalogManagement\CheckInItem.cshtml" />
     <Content Include="Views\AccountManagement\UpdateAccountStatus.cshtml" />
     <Content Include="Views\Reporting\LibrarianReport.cshtml" />
+    <Content Include="Views\AccountManagement\AccountsList.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

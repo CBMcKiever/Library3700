@@ -2,7 +2,9 @@
 @{
     ViewBag.Title = "MissingItem";
 }
-
+<br />
+@Html.ActionLink("< Back", "Home", "AccountManagement")
+<br />
 <br />
 <h2>Report Missing Item</h2>
 @if (Model.ItemList == null || Model.ItemList.Count() == 0)

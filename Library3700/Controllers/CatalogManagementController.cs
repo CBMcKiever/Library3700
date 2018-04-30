@@ -279,15 +279,13 @@ namespace Library3700.Controllers
                 if (id == 1)
                 {
                     ItemStatusViewModel AccountItemsCheckout = new ItemStatusViewModel();
-                    List<Item> ItemList = db.Items.ToList();
-                    //List<ItemStatusLog> ItemList = db.ItemStatusLogs.OrderByDescending(x => x.LogDateTime).ToList();
+                    List<Item> ItemList = db.ItemStatusLogs.Select(f => f.Item).ToList();
                     List<Item> NewItemList = new List<Item>();
 
                     foreach (var item in ItemList)
                     {
-                        List<ItemStatusLog> itemListByID = db.ItemStatusLogs.Where(x => x.ItemId == item.ItemId).ToList();
-                        var listItem = itemListByID.Select(f => f.Item).FirstOrDefault();
-                        byte lastStatus = listItem.ItemStatusLogs.OrderByDescending(x => x.LogDateTime).Select(f => f.ItemStatusTypeId).FirstOrDefault();
+                        Item listItem = ItemList.Where(x => x.ItemId == item.ItemId).Last();
+                        byte lastStatus = listItem.ItemStatusLogs.Select(f => f.ItemStatusTypeId).Last();
                         if (lastStatus != 1)
                         {
                             NewItemList.Add(listItem);
@@ -381,14 +379,14 @@ namespace Library3700.Controllers
                     }
                     if(itemStatusLog.ItemStatusTypeId == 2)
                     {
-                        DateTime Now = DateTime.Now;
-                        DateTime HoldDate = Now.AddDays(1);
-                        itemStatusLog.ReturnItemDueDate = HoldDate;
-                        db.ItemStatusLogs.Add(itemStatusLog);
-                        db.SaveChanges();
+                            DateTime Now = DateTime.Now;
+                            DateTime HoldDate = Now.AddDays(1);
+                            itemStatusLog.ReturnItemDueDate = HoldDate;
+                            db.ItemStatusLogs.Add(itemStatusLog);
+                            db.SaveChanges();
 
-                        return notification.ReserveItemSuccess(HoldDate);
-                    }
+                            return notification.ReserveItemSuccess(HoldDate);
+                   }
                     else
                     {
                         db.ItemStatusLogs.Add(itemStatusLog);
