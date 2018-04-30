@@ -340,6 +340,7 @@
       <DependentUpon>LibraryModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\ViewModels\AccountItems.cs" />
+    <Compile Include="Models\ViewModels\Accounts.cs" />
     <Compile Include="Models\ViewModels\CatalogItemViewModel.cs" />
     <Compile Include="Models\ViewModels\ItemStatusViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
