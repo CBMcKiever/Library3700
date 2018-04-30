@@ -34,7 +34,7 @@
                 FirstName: $("input[name=FirstName]").val(),
                 LastName: $("input[name=LastName]").val(),
                 EmailAddress: $("input[name=EmailAddress]").val(),
-                IsLibrarian: $("input[name=IsLibrarian]").checked
+                IsLibrarian: $("input[name=IsLibrarian]").prop("checked")
             };
 
             $.post(url, data, function (response) {

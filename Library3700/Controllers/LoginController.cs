@@ -122,6 +122,9 @@ namespace Library3700.Controllers
             IAuthenticationManager authMgr = ctx.Authentication;
 
             authMgr.SignOut("ApplicationCookie");
+
+            System.Web.HttpContext.Current.Session.Remove("activeAccount");
+
             return RedirectToAction("Index", "Login");
         }
 

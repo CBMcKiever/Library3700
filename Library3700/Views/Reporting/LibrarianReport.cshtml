@@ -16,14 +16,17 @@
 
 <p>Welcome, @activeAccount.FirstName @activeAccount.LastName</p>
 
-@foreach (var account in Model)
+<br /> <br />
+
+@foreach (var account in Model.Where(a => a.AccountItems.Any()))
 {
+    <h4>Account</h4>
     <ul class="list-group">
         <li class="list-group-item">Account #: @account.AccountID</li>
         <li class="list-group-item">Email: @account.EmailAddress</li>
     </ul>
     <br />
-
+    <h4>Items</h4>
     foreach (var accountItem in account.AccountItems)
     {
         if (account.AccountItems.Count() == 0)
@@ -54,6 +57,7 @@
                 </tbody>
             </table>
             <br />
+            <hr />
         }
 
     }

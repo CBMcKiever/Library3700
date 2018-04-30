@@ -279,14 +279,15 @@ namespace Library3700.Controllers
                 if (id == 1)
                 {
                     ItemStatusViewModel AccountItemsCheckout = new ItemStatusViewModel();
-                    List<ItemStatusLog> ItemList = db.ItemStatusLogs.OrderByDescending(x => x.LogDateTime).ToList();
+                    List<Item> ItemList = db.Items.ToList();
+                    //List<ItemStatusLog> ItemList = db.ItemStatusLogs.OrderByDescending(x => x.LogDateTime).ToList();
                     List<Item> NewItemList = new List<Item>();
 
                     foreach (var item in ItemList)
                     {
                         List<ItemStatusLog> itemListByID = db.ItemStatusLogs.Where(x => x.ItemId == item.ItemId).ToList();
                         var listItem = itemListByID.Select(f => f.Item).FirstOrDefault();
-                        byte lastStatus = listItem.ItemStatusLogs.Select(f => f.ItemStatusTypeId).FirstOrDefault();
+                        byte lastStatus = listItem.ItemStatusLogs.OrderByDescending(x => x.LogDateTime).Select(f => f.ItemStatusTypeId).FirstOrDefault();
                         if (lastStatus != 1)
                         {
                             NewItemList.Add(listItem);
